@@ -1,0 +1,16 @@
+{
+  "name": "Property Seeker",
+  "version": "1.0.0",
+  "description": "Calculate the price range for property advertised on Real Estate.",
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": true
+  },
+  "icons": {
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": ["https://*.realestate.com.au/*"],
+  "manifest_version": 2,
+  "content_security_policy": "default-src 'none'; style-src 'self'; script-src 'self'; connect-src https://www.realestate.com.au"
+}
