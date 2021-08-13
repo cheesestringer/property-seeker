@@ -6,7 +6,9 @@ Calculate the price range for property advertised on [Real Estate](https://www.r
 
 ### Install
 
-Waiting for store approvals...
+- [Chrome](https://chrome.google.com/webstore/detail/property-seeker/olfjldooogfhhgklechmbdemheblklga)
+- Firefox (pending)
+- Edge (pending)
 
 ### Privacy
 All searches are performed within your own browser and are not stored or shared with anyone else.
