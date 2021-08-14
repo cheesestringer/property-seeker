@@ -1,6 +1,6 @@
 {
   "name": "Property Seeker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Calculate the price range for property advertised on Real Estate.",
   "background": {
     "scripts": ["background.js"],

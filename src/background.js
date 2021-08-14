@@ -27,7 +27,7 @@ const getPrice = async (tab) => {
         const first = node.innerText.split(`marketing_price_range\\":\\"`)[1];
         const second = first.split(`\\",`)[0];
         const price = second.split("_");
-        chrome.tabs.sendMessage(tab.id, { message: 'update', price: `$${price[0]} to $${price[1]}` });
+        chrome.tabs.sendMessage(tab.id, { message: 'update', url: tab.url, price: price });
       }
     }
   }
