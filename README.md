@@ -13,7 +13,7 @@ Calculate the price range for property advertised on [Real Estate](https://www.r
 ### Privacy
 All searches are performed within your own browser and are not stored or shared with anyone else.
 
-To enforce this the extension's [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) uses the `connect-src` directive to restrict communication to Real Estate servers at `https://www.realestate.com.au`.
+To enforce this the extension's [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) uses the `connect-src` directive to restrict communication to Real Estate servers at `https://*.realestate.com.au`.
 
 ### Acknowledgements
 

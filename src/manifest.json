@@ -12,5 +12,5 @@
   },
   "permissions": ["https://*.realestate.com.au/*"],
   "manifest_version": 2,
-  "content_security_policy": "default-src 'none'; style-src 'self'; script-src 'self'; connect-src https://www.realestate.com.au"
+  "content_security_policy": "default-src 'none'; style-src 'self'; script-src 'self'; connect-src https://*.realestate.com.au"
 }
