@@ -4,18 +4,18 @@ chrome.runtime.onMessage.addListener(request => {
       return;
     }
 
-    const header = document.querySelector(".property-info-address");
-    if (!header) {
+    const element = document.querySelector('.property-info-address');
+    if (!element) {
       return;
     }
 
-    const range = document.createElement("span");
-    range.style = "display: block; padding-top: 1.5rem;";
+    const range = document.createElement('span');
+    range.style = 'display: block; padding-top: 1.5rem;';
     range.innerText = `Range: $${request.price[0]}`;
     if (request.price[1]) {
       range.innerText += ` to $${request.price[1]}`;
-    };
+    }
 
-    header.append(range);
+    element.append(range);
   }
 });
