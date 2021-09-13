@@ -61,7 +61,9 @@ const getRealEstateRange = async tab => {
 };
 
 const constants = {
-  domainHost: 'https://www.domain.com.au/'
+  domainHost: 'https://www.domain.com.au/',
+  buy: 'buy',
+  sold: 'sold'
 };
 
 const getDomainRange = async tab => {
@@ -78,14 +80,17 @@ const getDomainRange = async tab => {
     } = await fetchJson(tab.url);
 
     // Ignore rentals
-    if (listingSummary.mode.toLowerCase() !== 'buy') {
+    const mode = listingSummary.mode.toLowerCase();
+    if (mode !== constants.buy && mode !== constants.sold) {
       return;
     }
 
     let filter = listingSummary.beds ? `&bedrooms=${listingSummary.beds}-${listingSummary.beds}` : '';
     filter += listingSummary.baths ? `&bathrooms=${listingSummary.baths}-${listingSummary.baths}` : '';
     filter += listingSummary.parking ? `&carspaces=${listingSummary.parking}-${listingSummary.parking}` : '';
-    filter += '&excludeunderoffer=1';
+    if (mode === constants.buy) {
+      filter += '&excludeunderoffer=1';
+    }
     filter += '&ssubs=0';
 
     const location = map.suburbProfileUrl.split('/').pop();
@@ -96,7 +101,8 @@ const getDomainRange = async tab => {
     }
 
     // Seems like domain sets the lower range to 0 so we only need to calculate the upper range.
-    const maxPrice = await getMaxPrice(id, type, location, filter);
+    const searchMode = mode === constants.buy ? 'sale' : 'sold-listings';
+    const maxPrice = await getMaxPrice(id, searchMode, location, type, filter);
 
     chrome.tabs.sendMessage(tab.id, {
       message: 'update',
@@ -108,13 +114,13 @@ const getDomainRange = async tab => {
   }
 };
 
-const getMaxPrice = async (id, type, location, query) => {
+const getMaxPrice = async (id, mode, location, type, query) => {
   let minimum = 50000;
   let maximum = 12000000;
   let searchValue = getMiddle(minimum, maximum);
 
   for (let i = 0; i < 12; i++) {
-    const data = await fetchJson(`${constants.domainHost}sale/${location}/${type}/?price=${searchValue}-${maximum}${query}`);
+    const data = await fetchJson(`${constants.domainHost}${mode}/${location}/${type}/?price=${searchValue}-${maximum}${query}`);
     if (data.props.listingSearchResultIds.includes(id)) {
       minimum = searchValue;
       searchValue = getMiddle(searchValue, maximum);
