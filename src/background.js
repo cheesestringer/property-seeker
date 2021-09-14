@@ -85,10 +85,10 @@ const getDomainRange = async tab => {
       return;
     }
 
-    let filter = listingSummary.beds ? `&bedrooms=${listingSummary.beds}-${listingSummary.beds}` : '';
-    filter += listingSummary.baths ? `&bathrooms=${listingSummary.baths}-${listingSummary.baths}` : '';
-    filter += listingSummary.parking ? `&carspaces=${listingSummary.parking}-${listingSummary.parking}` : '';
-    if (mode === constants.buy) {
+    let filter = listingSummary.beds ? `&bedrooms=${getFilterMax(listingSummary.beds)}` : '';
+    filter += listingSummary.baths ? `&bathrooms=${getFilterMax(listingSummary.baths)}` : '';
+    filter += listingSummary.parking ? `&carspaces=${getFilterMax(listingSummary.parking)}` : '';
+    if (mode === constants.buy && listingSummary.status !== 'underOffer') {
       filter += '&excludeunderoffer=1';
     }
     filter += '&ssubs=0';
@@ -100,7 +100,7 @@ const getDomainRange = async tab => {
       return;
     }
 
-    // Seems like domain sets the lower range to 0 so we only need to calculate the upper range.
+    // Seems like domain sets the lower range to 0 so we only need to calculate the upper range
     const searchMode = mode === constants.buy ? 'sale' : 'sold-listings';
     const maxPrice = await getMaxPrice(id, searchMode, location, type, filter);
 
@@ -114,6 +114,11 @@ const getDomainRange = async tab => {
   }
 };
 
+// Domain search breaks when the property value exceeds what's available on the filter UI
+const getFilterMax = value => {
+  return value > 5 ? `5-any` : `${value}-${value}`;
+};
+
 const getMaxPrice = async (id, mode, location, type, query) => {
   let minimum = 50000;
   let maximum = 12000000;
@@ -125,7 +130,7 @@ const getMaxPrice = async (id, mode, location, type, query) => {
       minimum = searchValue;
       searchValue = getMiddle(searchValue, maximum);
 
-      // Check percentage change to save on requests.
+      // Check percentage change to save on requests
       if (buggerAllChange(minimum, searchValue)) {
         console.log(`Property ${id} found: $${minimum.toLocaleString()} found after ${i + 1} requests.`);
         return roundUp(minimum);
@@ -134,7 +139,7 @@ const getMaxPrice = async (id, mode, location, type, query) => {
       maximum = searchValue;
       searchValue = getMiddle(minimum, searchValue);
 
-      // Check percentage change to save on requests.
+      // Check percentage change to save on requests
       if (buggerAllChange(searchValue, maximum)) {
         console.log(`Property ${id} missing: $${maximum.toLocaleString()} found after ${i + 1} requests.`);
         return roundDown(maximum);
