@@ -28,7 +28,7 @@ To enforce this the extension's [Content Security Policy](https://developer.mozi
 
 ### Disclaimer
 
-This extension is not connected with, or approved by, Domain Group.
+This extension is not connected with, or approved by, Domain Group or REA Group.
 
 ### Acknowledgements
 
