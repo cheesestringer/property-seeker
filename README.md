@@ -26,6 +26,10 @@ To enforce this the extension's [Content Security Policy](https://developer.mozi
 
 ![RealEstate](images/realestate.png?raw=true)
 
+### Disclaimer
+
+This extension is not connected with, or approved by, Domain Group.
+
 ### Acknowledgements
 
 Based on [pectusbrah's](https://www.reddit.com/user/pectusbrah) Reddit [post](https://www.reddit.com/r/AusFinance/comments/p28a7u/heres_how_to_find_the_price_range_of_any_house_on/).
