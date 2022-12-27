@@ -45,8 +45,10 @@ const getRealEstateRange = async tab => {
     const nodes = doc.querySelectorAll('script');
     for (const node of nodes) {
       if (node.innerText.includes('marketing_price_range')) {
-        const first = node.innerText.split(`marketing_price_range\\":\\"`)[1];
-        const second = first.split(`\\",`)[0];
+        const text = node.innerText.split(`marketing_price_range`)[1];
+        const cleaned = text.replace(/\\/g, '');
+        const first = cleaned.split(`":"`)[1];
+        const second = first.split(`",`)[0];
         const price = second.split('_');
         chrome.tabs.sendMessage(tab.id, {
           message: 'update',
