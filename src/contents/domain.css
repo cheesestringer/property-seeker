@@ -1,0 +1,36 @@
+#plasmo-shadow-container {
+  z-index: 1 !important;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 32px;
+}
+
+.property .logo {
+  height: 40px;
+}
+
+span {
+  padding-left: 5px;
+}
+
+.message {
+  font-size: 15px;
+}
+
+.property .message {
+  font-size: 20px;
+}
+
+.price {
+  font-weight: bold;
+}
+
+.property .price {
+  font-size: 25px;
+}

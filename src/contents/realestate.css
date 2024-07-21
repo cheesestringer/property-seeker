@@ -1,0 +1,18 @@
+#plasmo-shadow-container {
+  z-index: 1 !important;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 35px;
+}
+
+.price {
+  padding-left: 5px;
+  font-size: 18px;
+  font-weight: 600;
+}
