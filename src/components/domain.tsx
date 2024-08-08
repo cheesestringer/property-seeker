@@ -1,29 +1,13 @@
 import logo from 'data-base64:../../assets/logo.svg';
-import styleText from 'data-text:./domain.css';
-import type { PlasmoCSConfig, PlasmoCSUIProps, PlasmoGetInlineAnchor, PlasmoGetInlineAnchorList, PlasmoGetStyle } from 'plasmo';
+import type { PlasmoCSUIProps } from 'plasmo';
 import { useEffect, useState, type FC } from 'react';
-import { cachePrice, getCachedPrice } from '~common';
+import { cachePrice, getCachedPrice, toCurrencyFormat } from '~common';
+import { propertySeeker, seeking } from '~constants';
 import { getFilter, getPrice, getPropertyDetails, getPropertyType } from '~services/domainService';
 
-export const config: PlasmoCSConfig = {
-  matches: ['https://www.domain.com.au/*'],
-  exclude_matches: ['https://www.domain.com.au/rent/*']
-};
-
-export const getInlineAnchor: PlasmoGetInlineAnchor = async () => document.querySelector<HTMLElement>('[data-testid*="summary-title"]');
-
-export const getInlineAnchorList: PlasmoGetInlineAnchorList = async () => document.querySelectorAll<HTMLElement>('p[data-testid="listing-card-price"]');
-
-export const getStyle: PlasmoGetStyle = () => {
-  const style = document.createElement('style');
-  style.textContent = styleText;
-  return style;
-};
-
-const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
+export const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
   const [message, setMessage] = useState('');
   const [range, setRange] = useState<number>(null);
-  const [propertyListing, setPropertyListing] = useState(false);
   const controller = new AbortController();
 
   useEffect(() => {
@@ -32,15 +16,14 @@ const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
 
   const handleListing = async () => {
     const { element } = anchor;
-    const testid = element.attributes.getNamedItem('data-testid').value;
+    const testid = element.attributes.getNamedItem('data-testid')?.value;
     if (testid === 'listing-details__listing-summary-title-name') {
-      setPropertyListing(true);
       setMessage(`Projects not supported`);
       return;
     }
 
+    // Handle property listings
     if (testid === 'listing-details__summary-title') {
-      setPropertyListing(true);
       const price = await getPropertyPrice(element.baseURI);
       setRange(price);
       return;
@@ -69,14 +52,15 @@ const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
     observer.observe(container);
   };
 
-  const getPropertyPrice = async (url: string): Promise<number> => {
-    const parsedId = url.split('-').pop();
+  const getPropertyPrice = async (href: string): Promise<number> => {
+    const url = new URL(href);
+    const parsedId = url.pathname.split('-').pop();
     const cachedPrice = getCachedPrice(parsedId);
     if (cachedPrice) {
       return cachedPrice;
     }
 
-    const details = await getPropertyDetails(url);
+    const details = await getPropertyDetails(url.origin + url.pathname);
     if (details == null) {
       return;
     }
@@ -87,31 +71,23 @@ const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
 
     const type = getPropertyType(listingSummary.propertyType);
     if (!type) {
-      setMessage(`Unhandled property type '${listingSummary.propertyType}'`);
+      setMessage(`Unhandled type '${listingSummary.propertyType}'`);
       return;
     }
 
     const searchMode = listingSummary.mode === 'buy' ? 'sale' : 'sold-listings';
     const filter = getFilter(listingSummary, street);
     const price = await getPrice(id, searchMode, type, footer.suburb.slug, filter, controller.signal);
-
-    // If the price is below 60k don't bother caching since something is probably wrong
-    if (price > 60_000) {
-      cachePrice(id, price);
-    }
+    cachePrice(id, price);
 
     return price;
   };
 
   return (
-    <div className={propertyListing ? 'container property' : 'container listing'}>
-      <img className="logo" src={logo} alt="Property Seeker" title="Property Seeker" />
+    <div className="container">
+      <img className="logo" src={logo} alt={propertySeeker} title={propertySeeker} />
       {message && <span className="message">{message}</span>}
-      {!message && (
-        <span className="price">{range ? range.toLocaleString('en-AU', { style: 'currency', currency: 'AUD', minimumFractionDigits: 0 }) : 'Seeking...'}</span>
-      )}
+      {!message && <span className="price">{range ? toCurrencyFormat(range) : seeking}</span>}
     </div>
   );
 };
-
-export default Domain;

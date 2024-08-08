@@ -8,6 +8,7 @@ Calculate the price range for property advertised on [Domain](https://www.domain
 
 - [Chrome](https://chrome.google.com/webstore/detail/property-seeker/olfjldooogfhhgklechmbdemheblklga)
 - [Firefox](https://addons.mozilla.org/en-US/firefox/addon/property-seeker)
+- [Firefox for Android](https://addons.mozilla.org/en-US/firefox/addon/property-seeker)
 - [Edge](https://microsoftedge.microsoft.com/addons/detail/property-seeker/fonehbkcamhecgmkmmcibkdpdjdkjmef)
 
 ## Privacy

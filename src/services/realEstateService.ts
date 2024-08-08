@@ -1,4 +1,4 @@
-import { convertToPrettyNumber } from '~common';
+import { convertToPrettyNumber, isDevelopment } from '~common';
 import { oneDayInMs } from '~constants';
 
 const extractPrice = (text: string) => {
@@ -9,7 +9,9 @@ const extractPrice = (text: string) => {
     if (price.length == 2) {
       const lower = convertToPrettyNumber(price[0]);
       const upper = convertToPrettyNumber(price[1]);
-      console.log(lower, upper);
+      if (isDevelopment()) {
+        console.table({ lower, upper, match: match[1] });
+      }
       return `${lower}-${upper}`;
     } else {
       return convertToPrettyNumber(price[0]);

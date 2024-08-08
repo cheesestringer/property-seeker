@@ -1,4 +1,4 @@
-import { buggerAllChange, getMiddle, roundDown, roundUp } from '~common';
+import { buggerAllChange, getMiddle, isDevelopment, roundDown, roundUp } from '~common';
 
 // Search won't work if the filter value exceeds what's available on the UI
 const getFilterMax = (value: number) => {
@@ -132,8 +132,11 @@ export const getPrice = async (id: number, mode: string, type: string, location:
 
         // Check percentage change between the old search value and the new search value to save on requests
         if (buggerAllChange(minimum, searchValue)) {
-          console.table({ search: searchValue.toLocaleString(), min: minimum.toLocaleString(), max: maximum.toLocaleString() });
-          console.log(`Property ${id} found: $${searchValue.toLocaleString()} found after ${i + 1} requests.`, roundUp(searchValue));
+          if (isDevelopment()) {
+            console.table({ search: searchValue.toLocaleString(), min: minimum.toLocaleString(), max: maximum.toLocaleString() });
+            console.log(`Property ${id} found: $${searchValue.toLocaleString()} after ${i + 1} requests.`, roundUp(searchValue));
+          }
+
           return roundUp(searchValue);
         }
       } else {
@@ -142,8 +145,11 @@ export const getPrice = async (id: number, mode: string, type: string, location:
 
         // Check percentage change between the old search value and the new search value to save on requests
         if (buggerAllChange(searchValue, maximum)) {
-          console.table({ search: searchValue.toLocaleString(), min: minimum.toLocaleString(), max: maximum.toLocaleString() });
-          console.log(`Property ${id} missing: $${maximum.toLocaleString()} found after ${i + 1} requests.`, roundDown(maximum));
+          if (isDevelopment()) {
+            console.table({ search: searchValue.toLocaleString(), min: minimum.toLocaleString(), max: maximum.toLocaleString() });
+            console.log(`Property ${id} missing: $${maximum.toLocaleString()} after ${i + 1} requests.`, roundDown(maximum));
+          }
+
           return roundDown(maximum);
         }
       }

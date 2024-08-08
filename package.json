@@ -1,8 +1,8 @@
 {
   "name": "property-seeker",
   "displayName": "Property Seeker",
-  "version": "2.0.0",
-  "description": "House hunting made easy",
+  "version": "2.0.1",
+  "description": "Take the guess work out of house hunting.",
   "author": "cheesestringer",
   "scripts": {
     "start": "plasmo dev",

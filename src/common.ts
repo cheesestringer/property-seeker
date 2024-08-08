@@ -1,5 +1,13 @@
 import { multipliers, oneDayInMs } from '~constants';
 
+export const isDevelopment = () => {
+  return process.env.NODE_ENV === 'development';
+};
+
+export const toCurrencyFormat = (value: number, locale = 'en-AU', currency = 'AUD') => {
+  return value.toLocaleString(locale, { style: 'currency', currency, minimumFractionDigits: 0 });
+};
+
 export const getMiddle = (lower: number, upper: number) => {
   return Math.round((lower + upper) / 2);
 };
@@ -22,7 +30,7 @@ export const roundDown = (value: number) => {
   return Math.floor(value / 10_000) * 10_000;
 };
 
-export const cachePrice = (id: number, price: number) => {
+export const cachePrice = (id: number | string, price: number) => {
   if (price) {
     const cache = { timestamp: Date.now(), price };
     localStorage.setItem(id.toString(), JSON.stringify(cache));
@@ -33,7 +41,7 @@ export const getCachedPrice = (id: number | string) => {
   const cache = localStorage.getItem(id.toString());
   if (cache) {
     const { timestamp, price } = JSON.parse(cache);
-    // If the cache is older than one day get an updated price
+    // Only used cached value for one day
     if (Date.now() - timestamp <= oneDayInMs) {
       return price;
     }
