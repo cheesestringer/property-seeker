@@ -1,6 +1,6 @@
-# ![Property Seeker]()
+# ![Property Seeker](https://github.com/user-attachments/assets/73740ed3-8d6d-4b6b-a7a4-53c889dfd2ac)
 
-Calculate the price range for property advertised on [Domain](https://www.domain.com.au) and [Real Estate](https://www.realestate.com.au).
+Calculate the price range for property advertised on [Domain](https://www.domain.com.au) and [Realestate](https://www.realestate.com.au).
 
 [<img src="https://cdn.buymeacoffee.com/buttons/v2/default-orange.png" width="150" />](https://www.buymeacoffee.com/cheesestringer)
 
@@ -19,11 +19,11 @@ All searches are performed within your browser and are not stored or shared with
 
 ### Domain
 
-![Domain]()
+![Domain](https://github.com/user-attachments/assets/2faf65c4-9c42-472c-9e40-3359edbc773e)
 
-### RealEstate
+### Realestate
 
-![RealEstate]()
+![Realestate](https://github.com/user-attachments/assets/68791286-acd8-406b-995e-96d02e6296d5)
 
 ## Disclaimer
 
@@ -31,4 +31,4 @@ This extension is not connected with, or approved by, Domain Group or REA Group.
 
 ## Acknowledgements
 
-RealEstate inspiration taken from [pectusbrah's](https://www.reddit.com/user/pectusbrah) Reddit [post](https://www.reddit.com/r/AusFinance/comments/p28a7u/heres_how_to_find_the_price_range_of_any_house_on/).
+Realestate inspiration taken from [pectusbrah's](https://www.reddit.com/user/pectusbrah) Reddit [post](https://www.reddit.com/r/AusFinance/comments/p28a7u/heres_how_to_find_the_price_range_of_any_house_on/).
