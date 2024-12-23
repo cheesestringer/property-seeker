@@ -1,6 +1,8 @@
 # ![Property Seeker](https://github.com/user-attachments/assets/73740ed3-8d6d-4b6b-a7a4-53c889dfd2ac)
 
-Calculate the price range for property advertised on [Domain](https://www.domain.com.au) and [Realestate](https://www.realestate.com.au).
+Take the guess work out of house hunting 🎉
+
+Shows you the hidden price range for property advertised on [Domain](https://www.domain.com.au) and [Realestate](https://www.realestate.com.au).
 
 [<img src="https://cdn.buymeacoffee.com/buttons/v2/default-orange.png" width="150" />](https://www.buymeacoffee.com/cheesestringer)
 
