@@ -6,6 +6,8 @@ Shows you the hidden price range for property advertised on [Domain](https://www
 
 [<img src="https://cdn.buymeacoffee.com/buttons/v2/default-orange.png" width="150" />](https://www.buymeacoffee.com/cheesestringer)
 
+If you'd like to find the hidden salary range for jobs check out [Salary Seeker](https://github.com/cheesestringer/salary-seeker).
+
 ## Install
 
 - [Chrome](https://chrome.google.com/webstore/detail/property-seeker/olfjldooogfhhgklechmbdemheblklga)
@@ -34,3 +36,7 @@ This extension is not connected with, or approved by, Domain Group or REA Group.
 ## Acknowledgements
 
 Realestate inspiration taken from [pectusbrah's](https://www.reddit.com/user/pectusbrah) Reddit [post](https://www.reddit.com/r/AusFinance/comments/p28a7u/heres_how_to_find_the_price_range_of_any_house_on/).
+
+## Contact
+
+cheesestringer@protonmail.com
