@@ -73,6 +73,10 @@ export const getPropertyType = (value: string) => {
     return 'town-house';
   }
 
+  if (type === 'acreage / semi-rural') {
+    return 'acreage-semi-rural';
+  }
+
   if (type === 'vacant land') {
     return 'vacant-land';
   }
