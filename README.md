@@ -6,6 +6,7 @@ Shows you the hidden price range for property advertised on [Domain](https://www
 
 [<img src="https://cdn.buymeacoffee.com/buttons/v2/default-orange.png" width="150" />](https://www.buymeacoffee.com/cheesestringer)
 
+If you'd like to find the hidden price range for New Zealand property check out [Property Seeker NZ](https://github.com/cheesestringer/property-seeker-nz).\
 If you'd like to find the hidden salary range for jobs check out [Salary Seeker](https://github.com/cheesestringer/salary-seeker).
 
 ## Install

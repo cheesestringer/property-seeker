@@ -1,7 +1,7 @@
 {
   "name": "property-seeker",
   "displayName": "Property Seeker",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Take the guess work out of house hunting.",
   "author": "cheesestringer",
   "scripts": {
@@ -14,7 +14,7 @@
     "release-firefox": "npm run build-firefox&& npm run package-firefox"
   },
   "dependencies": {
-    "plasmo": "^0.89.4",
+    "plasmo": "^0.90.3",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
