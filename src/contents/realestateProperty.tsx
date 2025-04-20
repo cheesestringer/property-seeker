@@ -15,19 +15,20 @@ export const getStyle: PlasmoGetStyle = () => {
     .container {
       display: flex;
       align-items: center;
+      gap: 10px;
       margin-bottom: 0.25rem;
     }
     .logo {
       height: 40px;
     }
-    span {
-      padding-left: 5px;
+    .maps {
+      height: 24px;
     }
     .message {
       font-size: 15px;
     }
     .price {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 600;
     }
   `;

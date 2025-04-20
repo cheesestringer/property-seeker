@@ -4,8 +4,10 @@ import { useEffect, useState, type FC } from 'react';
 import { cachePrice, getCachedPrice, toCurrencyFormat } from '~common';
 import { propertySeeker, seeking } from '~constants';
 import { getFilter, getPrice, getPropertyDetails, getPropertyType } from '~services/domainService';
+import { ViewOnMaps } from './viewOnMaps';
 
 export const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
+  const { element } = anchor;
   const [message, setMessage] = useState('');
   const [range, setRange] = useState<number>(null);
   const controller = new AbortController();
@@ -15,7 +17,6 @@ export const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
   }, []);
 
   const handleListing = async () => {
-    const { element } = anchor;
     const testid = element.attributes.getNamedItem('data-testid')?.value;
     if (testid === 'listing-details__listing-summary-title-name') {
       setMessage(`Projects not supported`);
@@ -83,11 +84,15 @@ export const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
     return price;
   };
 
+  // Only show the maps icon when a property has been selected
+  const address = document.querySelector(`[data-testid='listing-details__button-copy-wrapper'] h1`)?.textContent;
+
   return (
-    <div className="container">
+    <div className="container" onClick={event => event.stopPropagation()}>
       <img className="logo" src={logo} alt={propertySeeker} title={propertySeeker} />
       {message && <span className="message">{message}</span>}
       {!message && <span className="price">{range ? toCurrencyFormat(range) : seeking}</span>}
+      <ViewOnMaps address={address} />
     </div>
   );
 };

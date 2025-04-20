@@ -18,12 +18,13 @@ export const getStyle: PlasmoGetStyle = () => {
     .container {
       display: flex;
       align-items: center;
+      gap: 10px;
     }
     .logo {
       height: 40px;
     }
-    span {
-      padding-left: 5px;
+    .maps {
+      height: 24px;
     }
     .message {
       font-size: 20px;

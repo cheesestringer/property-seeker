@@ -3,8 +3,10 @@ import type { PlasmoCSUIProps } from 'plasmo';
 import { useEffect, useState, type FC } from 'react';
 import { propertySeeker, seeking } from '~constants';
 import { getPrice } from '~services/realestateService';
+import { ViewOnMaps } from './viewOnMaps';
 
 export const Realestate: FC<PlasmoCSUIProps> = ({ anchor }) => {
+  const { element } = anchor;
   const [message, setMessage] = useState('');
   const [range, setRange] = useState<string>(null);
 
@@ -27,8 +29,6 @@ export const Realestate: FC<PlasmoCSUIProps> = ({ anchor }) => {
   };
 
   const handleListing = async () => {
-    const { element } = anchor;
-
     // Handle property listings
     if (element.className === 'property-info__middle-content') {
       getListingPrice(element.baseURI);
@@ -63,11 +63,15 @@ export const Realestate: FC<PlasmoCSUIProps> = ({ anchor }) => {
     }
   };
 
+  // Only show the maps icon when a property has been selected
+  const address = document.querySelector(`[class='property-info-address']`)?.textContent;
+
   return (
     <div className="container">
       <img className="logo" src={logo} alt={propertySeeker} title={propertySeeker} />
       {message && <span className="message">{message}</span>}
       {!message && <span className="price">{range ? range : seeking}</span>}
+      <ViewOnMaps address={address} />
     </div>
   );
 };
