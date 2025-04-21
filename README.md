@@ -2,7 +2,7 @@
 
 Take the guess work out of house hunting 🎉
 
-Reveals the hidden price range for property advertised on [Domain](https://www.domain.com.au) and [Realestate](https://www.realestate.com.au).
+Reveals the hidden price range for property advertised on [Domain](https://www.domain.com.au) and [realestate.com.au](https://www.realestate.com.au).
 
 [<img src="https://cdn.buymeacoffee.com/buttons/v2/default-orange.png" width="150" />](https://www.buymeacoffee.com/cheesestringer)
 
@@ -14,6 +14,7 @@ If you'd like to find the hidden salary range for jobs check out [Salary Seeker]
 - **Reveal hidden prices**: Automatically display the hidden prices for properties.
 - **Privacy-Focused**: Searches are performed locally in your browser, ensuring your data is never shared externally.
 - **View prices everywhere**: Show prices on search results, property details, and maps.
+- **Property Insights integration**: Quickly access realestate.com.au Property Insights trends and data on Domain and realestate.com.au, removing the need to manually search for property details.
 - **Google Maps integration**: Quickly navigate to the property's location on Google Maps.
 - **Cross-Browser support**: Works on Chrome, Firefox (including Android), and Edge browsers.
 
@@ -30,9 +31,9 @@ If you'd like to find the hidden salary range for jobs check out [Salary Seeker]
 
 ![Domain](https://github.com/user-attachments/assets/2faf65c4-9c42-472c-9e40-3359edbc773e)
 
-### Realestate
+### realestate.com.au
 
-![Realestate](https://github.com/user-attachments/assets/68791286-acd8-406b-995e-96d02e6296d5)
+![realestate.com.au](https://github.com/user-attachments/assets/68791286-acd8-406b-995e-96d02e6296d5)
 
 ## Support
 
@@ -48,7 +49,7 @@ This extension is not connected with, or approved by, Domain Group or REA Group.
 
 ## Acknowledgements
 
-Realestate inspiration taken from [pectusbrah's](https://www.reddit.com/user/pectusbrah) Reddit [post](https://www.reddit.com/r/AusFinance/comments/p28a7u/heres_how_to_find_the_price_range_of_any_house_on/).
+realestate.com.au inspiration taken from [pectusbrah's](https://www.reddit.com/user/pectusbrah) Reddit [post](https://www.reddit.com/r/AusFinance/comments/p28a7u/heres_how_to_find_the_price_range_of_any_house_on/).
 
 ## Contact
 

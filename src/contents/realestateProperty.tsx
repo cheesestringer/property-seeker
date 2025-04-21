@@ -21,7 +21,7 @@ export const getStyle: PlasmoGetStyle = () => {
     .logo {
       height: 40px;
     }
-    .maps {
+    .icon {
       height: 24px;
     }
     .message {

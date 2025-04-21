@@ -5,6 +5,7 @@ import { cachePrice, getCachedPrice, toCurrencyFormat } from '~common';
 import { propertySeeker, seeking } from '~constants';
 import { getFilter, getPrice, getPropertyDetails, getPropertyType } from '~services/domainService';
 import { ViewOnMaps } from './viewOnMaps';
+import { ViewOnPropertyInsights } from './viewOnPropertyInsights';
 
 export const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
   const { element } = anchor;
@@ -92,6 +93,7 @@ export const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
       <img className="logo" src={logo} alt={propertySeeker} title={propertySeeker} />
       {message && <span className="message">{message}</span>}
       {!message && <span className="price">{range ? toCurrencyFormat(range) : seeking}</span>}
+      <ViewOnPropertyInsights address={address} />
       <ViewOnMaps address={address} />
     </div>
   );

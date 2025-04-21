@@ -4,6 +4,7 @@ import { useEffect, useState, type FC } from 'react';
 import { propertySeeker, seeking } from '~constants';
 import { getPrice } from '~services/realestateService';
 import { ViewOnMaps } from './viewOnMaps';
+import { ViewOnPropertyInsights } from './viewOnPropertyInsights';
 
 export const Realestate: FC<PlasmoCSUIProps> = ({ anchor }) => {
   const { element } = anchor;
@@ -71,6 +72,7 @@ export const Realestate: FC<PlasmoCSUIProps> = ({ anchor }) => {
       <img className="logo" src={logo} alt={propertySeeker} title={propertySeeker} />
       {message && <span className="message">{message}</span>}
       {!message && <span className="price">{range ? range : seeking}</span>}
+      <ViewOnPropertyInsights address={address} />
       <ViewOnMaps address={address} />
     </div>
   );
