@@ -1,10 +1,11 @@
-import { multipliers, oneDayInMs } from '~constants';
+import { keyPrefix, multipliers, oneDayInMs } from '~constants';
+import type { PropertyCache } from '~models';
 
 export const isDevelopment = () => {
   return process.env.NODE_ENV === 'development';
 };
 
-export const toCurrencyFormat = (value: number, locale = 'en-AU', currency = 'AUD') => {
+export const toCurrencyFormat = (value: number | string, locale = 'en-AU', currency = 'AUD') => {
   return value.toLocaleString(locale, { style: 'currency', currency, minimumFractionDigits: 0 });
 };
 
@@ -30,24 +31,34 @@ export const roundDown = (value: number) => {
   return Math.floor(value / 10_000) * 10_000;
 };
 
-export const cachePrice = (id: number | string, price: number) => {
-  if (price) {
-    const cache = { timestamp: Date.now(), price };
-    localStorage.setItem(id.toString(), JSON.stringify(cache));
+export const getBrowserCache = async (key: string): Promise<PropertyCache> => {
+  try {
+    const storage = await chrome.storage.local.get(key);
+    const cache = JSON.parse(storage[key] || '{}') as PropertyCache;
+    return cache;
+  } catch (error) {
+    console.error('Failed to get browser cache', error);
+    return {} as PropertyCache;
   }
 };
 
-export const getCachedPrice = (id: number | string) => {
-  const cache = localStorage.getItem(id.toString());
-  if (cache) {
-    const { timestamp, price } = JSON.parse(cache);
-    // Only used cached value for one day
-    if (Date.now() - timestamp <= oneDayInMs) {
-      return price;
-    }
+export const updateBrowserCache = async (key: string, updateFn: (data: PropertyCache) => PropertyCache) => {
+  try {
+    const currentCache = await getBrowserCache(key);
+    const updatedCache = updateFn(currentCache);
+
+    chrome.storage.local.set({ [key]: JSON.stringify(updatedCache) });
+  } catch (error) {
+    console.error('Failed to update browser cache', error);
+  }
+};
+
+export const cacheIsValid = (timestamp: number, expiry: number = oneDayInMs) => {
+  if (!timestamp) {
+    return null;
   }
 
-  return null;
+  return Date.now() - timestamp <= expiry;
 };
 
 export const convertToPrettyNumber = (value: string) => {
@@ -60,7 +71,7 @@ export const convertToPrettyNumber = (value: string) => {
   const number = parseFloat(cleaned.slice(0, -1));
 
   if (multipliers[unit]) {
-    return (number * multipliers[unit]).toLocaleString('en-AU', { style: 'currency', currency: 'AUD', minimumFractionDigits: 0 });
+    return toCurrencyFormat(number * multipliers[unit]);
   } else {
     return value;
   }

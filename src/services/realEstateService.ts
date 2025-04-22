@@ -1,5 +1,4 @@
-import { convertToPrettyNumber, isDevelopment } from '~common';
-import { oneDayInMs } from '~constants';
+import { cacheIsValid, convertToPrettyNumber, getBrowserCache, isDevelopment, updateBrowserCache } from '~common';
 
 const extractPrice = (text: string) => {
   const cleaned = text.replace(/\\/g, '');
@@ -14,7 +13,13 @@ const extractPrice = (text: string) => {
       }
       return `${lower}-${upper}`;
     } else {
-      return convertToPrettyNumber(price[0]);
+      const value = price[0];
+      let prettyValue = convertToPrettyNumber(value);
+      if (value === '$5m') {
+        // Range on realestate.com.au maxes out at 5 million so show a + symbol
+        return prettyValue + '+';
+      }
+      return prettyValue;
     }
   }
   return null;
@@ -22,21 +27,22 @@ const extractPrice = (text: string) => {
 
 export const getPrice = async (url: string): Promise<string> => {
   try {
-    const cache = localStorage.getItem(url);
-    if (cache) {
-      const { timestamp, price } = JSON.parse(cache);
-      if (Date.now() - timestamp <= oneDayInMs) {
-        return price;
-      }
+    const cache = await getBrowserCache(url);
+    if (cacheIsValid(cache.timestamp) && cache?.price) {
+      return cache.price;
     }
 
     const response = await fetch(url);
     const text = await response.text();
     const price = extractPrice(text);
     if (price) {
-      const cache = { timestamp: Date.now(), price };
-      localStorage.setItem(url, JSON.stringify(cache));
+      updateBrowserCache(url, cache => {
+        cache.price = price;
+        cache.timestamp = Date.now();
+        return cache;
+      });
     }
+
     return price;
   } catch (error) {
     console.log(error);

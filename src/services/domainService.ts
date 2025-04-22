@@ -22,7 +22,7 @@ export const getFilter = (summary: ListingSummary, street: string): string => {
 export const getPropertyType = (value: string) => {
   const type = value?.toLocaleLowerCase();
   if (type === 'house') {
-    return 'house';
+    return type;
   }
 
   if (type === 'new house & land') {
@@ -73,8 +73,8 @@ export const getPropertyType = (value: string) => {
     return 'town-house';
   }
 
-  if (type === 'rural') {
-    return type;
+  if (type === 'rural' || type === 'farm') {
+    return 'rural';
   }
 
   if (type === 'acreage / semi-rural') {

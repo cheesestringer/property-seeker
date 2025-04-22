@@ -1,0 +1,70 @@
+import { useEffect, useState } from 'react';
+import { seeking } from '~constants';
+import { useIntersectionObserver } from '~hooks/useObserver';
+
+interface PropertyInsightsProps {
+  cacheKey: string;
+  address: string;
+}
+
+export const PropertyInsights = ({ cacheKey, address }: PropertyInsightsProps) => {
+  const [isVisible, containerRef] = useIntersectionObserver();
+
+  const [loading, setLoading] = useState(true);
+  const [value, setValue] = useState('');
+  const [valueConfidence, setValueConfidence] = useState('');
+  const [propertyUrl, setPropertyUrl] = useState('');
+
+  const getPropertyInsights = async () => {
+    try {
+      const response = await chrome.runtime.sendMessage({ type: 'getPropertyInsights', cacheKey, address });
+      setValue(response.value);
+      setValueConfidence(response.confidence);
+      setPropertyUrl(response.url);
+    } catch (error) {
+      console.log('Failed to find property insights', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isVisible && address && cacheKey) {
+      getPropertyInsights();
+    }
+  }, [isVisible, address, cacheKey]);
+
+  const ConfidenceBadge = ({ confidence }: { confidence: string }) => {
+    if (propertyUrl) {
+      return (
+        <a href={propertyUrl} target="_blank" rel="noreferrer" title="View more details on property.com.au" aria-label="View more details on property.com.au">
+          <span className={`confidence-badge ${confidence?.toLocaleLowerCase()}`}>{confidence}</span>
+        </a>
+      );
+    }
+
+    return <span className={`confidence-badge ${confidence?.toLocaleLowerCase()}`}>Unavailable</span>;
+  };
+
+  return (
+    <>
+      <span
+        ref={containerRef}
+        className="item-label"
+        title="The PropTrack value esimate is calculated using automated statistical models based on available local property data, including the type of property, recent sales and local price trends.">
+        PropTrack value:
+      </span>
+      <span>
+        {loading ? (
+          <>{seeking}</>
+        ) : value ? (
+          <>
+            {value} <ConfidenceBadge confidence={valueConfidence} />
+          </>
+        ) : (
+          <ConfidenceBadge confidence="Building insights" />
+        )}
+      </span>
+    </>
+  );
+};

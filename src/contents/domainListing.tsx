@@ -1,3 +1,5 @@
+import domainStyles from 'data-text:../styles/domain.css';
+import styles from 'data-text:../styles/styles.css';
 import type { PlasmoCSConfig, PlasmoGetInlineAnchorList, PlasmoGetStyle } from 'plasmo';
 import { Domain } from '~components/domain';
 
@@ -6,34 +8,21 @@ export const config: PlasmoCSConfig = {
   exclude_matches: ['https://www.domain.com.au/rent/*']
 };
 
-export const getInlineAnchorList: PlasmoGetInlineAnchorList = async () => document.querySelectorAll<HTMLElement>('p[data-testid="listing-card-price"]');
-
-// Inline the stylesheets since css files currently get bundled in to content scripts as resources
 export const getStyle: PlasmoGetStyle = () => {
   const style = document.createElement('style');
-  style.textContent = `
-    #plasmo-shadow-container {
-      z-index: 1 !important;
-    }
-    .container {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .logo {
-      height: 32px;
-    }
-    .message {
-      font-size: 15px;
-    }
-    .price {
-      font-weight: bold;
-    }
-  `;
+  style.textContent = styles + domainStyles;
   return style;
+};
+
+export const getInlineAnchorList: PlasmoGetInlineAnchorList = async () => {
+  const elements = [...document.querySelectorAll<HTMLElement>('[data-testid="listing-card-price-wrapper"]')];
+  return elements.map(element => ({
+    element: element?.parentElement
+  }));
 };
 
 const DomainListing = ({ anchor }) => {
   return <Domain anchor={anchor} />;
 };
+
 export default DomainListing;

@@ -4,11 +4,11 @@ about: Create a bug report
 title: ''
 labels: bug
 assignees: ''
-
 ---
 
 **URL**
 Provide the URL for the property. For example:
+
 ```
 https://www.domain.com.au/...
 ```

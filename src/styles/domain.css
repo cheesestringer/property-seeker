@@ -1,0 +1,32 @@
+.tiny {
+  display: none;
+}
+/* Update styles on two column layout listings */
+@container (max-width: 320px) {
+  .item {
+    font-size: 14px;
+  }
+  .confidence-badge {
+    font-size: 10px;
+  }
+}
+/* Update styles on map view and similar property listings  */
+@container (max-width: 220px) {
+  .card-header span {
+    font-size: 14px;
+  }
+  .tiny {
+    display: inline;
+    font-size: 14px;
+    text-align: center;
+  }
+  .extra {
+    display: none;
+  }
+  .walk-score-container {
+    display: none;
+  }
+  .card-footer .links {
+    display: none;
+  }
+}

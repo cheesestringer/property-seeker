@@ -3,26 +3,34 @@ import type { PlasmoCSUIProps } from 'plasmo';
 import { useEffect, useState, type FC } from 'react';
 import { propertySeeker, seeking } from '~constants';
 import { getPrice } from '~services/realestateService';
+import { PropertyInsights } from './propertyInsights';
+import { ViewOnGitHub } from './viewOnGitHub';
 import { ViewOnMaps } from './viewOnMaps';
 import { ViewOnPropertyInsights } from './viewOnPropertyInsights';
+import { WalkScore } from './walkScore';
 
 export const Realestate: FC<PlasmoCSUIProps> = ({ anchor }) => {
   const { element } = anchor;
   const [message, setMessage] = useState('');
+  const [cacheKey, setCacheKey] = useState<string>(null);
   const [range, setRange] = useState<string>(null);
 
   useEffect(() => {
     handleListing();
   }, []);
 
-  const getListingPrice = async (url: string) => {
+  const getListingPrice = async (href: string) => {
     try {
-      if (url.toLocaleLowerCase().includes('/project/')) {
+      const url = new URL(href);
+      const cleanUrl = url.origin + url.pathname;
+
+      if (cleanUrl.toLocaleLowerCase().includes('/project/')) {
         setMessage('Projects not supported');
         return;
       }
 
-      const price = await getPrice(url);
+      setCacheKey(cleanUrl);
+      const price = await getPrice(cleanUrl);
       setRange(price);
     } catch (error) {
       setMessage('Failed to get price 😵');
@@ -37,16 +45,14 @@ export const Realestate: FC<PlasmoCSUIProps> = ({ anchor }) => {
     }
 
     // Handle map listings
-    if (element.className.includes('Styles__HeadlineText')) {
-      const link = element.parentElement.querySelector<HTMLAnchorElement>('a');
-      const url = new URL(link.href);
-      getListingPrice(url.origin + url.pathname);
+    if (element.className.includes('Styles__StyledCard')) {
+      const link = element.querySelector<HTMLAnchorElement>('a');
+      getListingPrice(link.href);
       return;
     }
 
-    // Handle list listings
-    if (element.className === 'residential-card__title') {
-      const link = element.parentElement.querySelector<HTMLAnchorElement>('.residential-card__address-heading > a');
+    if (element.className === 'residential-card__content') {
+      const link = element.querySelector<HTMLAnchorElement>('.residential-card__address-heading > a');
       if (!link?.href) {
         return;
       }
@@ -64,16 +70,38 @@ export const Realestate: FC<PlasmoCSUIProps> = ({ anchor }) => {
     }
   };
 
-  // Only show the maps icon when a property has been selected
-  const address = document.querySelector(`[class='property-info-address']`)?.textContent;
+  const listAddress = element.querySelector(`[class='residential-card__address-heading']`)?.textContent;
+  const propertyAddress = document.querySelector(`[class='property-info-address']`)?.textContent;
+  const mapAddress = element.querySelector(`[class*='Styles__AddressLink']`)?.textContent;
+  const address = listAddress ?? propertyAddress ?? mapAddress;
 
   return (
-    <div className="container">
-      <img className="logo" src={logo} alt={propertySeeker} title={propertySeeker} />
-      {message && <span className="message">{message}</span>}
-      {!message && <span className="price">{range ? range : seeking}</span>}
-      <ViewOnPropertyInsights address={address} />
-      <ViewOnMaps address={address} />
+    <div className="card" onClick={e => e.stopPropagation()}>
+      <div className="card-header">
+        <img className="logo" src={logo} alt={propertySeeker} title={propertySeeker} />
+        <span>Property Seeker</span>
+      </div>
+      <div className="card-body">
+        <div className="items">
+          <div className="item">
+            <span className="item-label" title="The price range is extracted from the realestate.com.au property listing.">
+              Price:
+            </span>
+            <span>{range ?? seeking}</span>
+          </div>
+          <div className="item">
+            <PropertyInsights cacheKey={cacheKey} address={address} />
+          </div>
+        </div>
+      </div>
+      <div className="card-footer">
+        <WalkScore cacheKey={cacheKey} address={address} />
+        <div className="links">
+          <ViewOnPropertyInsights address={address} />
+          <ViewOnMaps address={address} />
+          <ViewOnGitHub />
+        </div>
+      </div>
     </div>
   );
 };

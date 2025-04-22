@@ -31,8 +31,8 @@ export const ViewOnPropertyInsights = ({ address }: ViewOnPropertyInsightsProps)
 
   return (
     url && (
-      <a href={url} target="_blank" rel="noreferrer" aria-label="View realestate.com.au Property Insights">
-        <img className="icon" src={realestateIcon} alt="Property Insights icon" title="View realestate.com.au Property Insights" />
+      <a href={url} target="_blank" rel="noreferrer" aria-label="View property on realestate.com.au Property Insights">
+        <img className="icon" src={realestateIcon} alt="Property Insights icon" title="View property on realestate.com.au Property Insights" />
       </a>
     )
   );

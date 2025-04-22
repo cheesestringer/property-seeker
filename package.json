@@ -1,16 +1,17 @@
 {
   "name": "property-seeker",
   "displayName": "Property Seeker",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "Take the guess work out of house hunting.",
   "author": "cheesestringer",
   "scripts": {
     "start": "plasmo dev",
+    "format": "npx prettier --write .",
     "build": "plasmo build",
     "package": "plasmo package",
     "release": "npm run build&& npm run package",
-    "build-firefox": "plasmo build --target=firefox-mv2",
-    "package-firefox": "plasmo package --target=firefox-mv2",
+    "build-firefox": "plasmo build --target=firefox-mv3",
+    "package-firefox": "plasmo package --target=firefox-mv3",
     "release-firefox": "npm run build-firefox&& npm run package-firefox"
   },
   "dependencies": {
@@ -27,5 +28,15 @@
     "@types/react-dom": "18.2.18",
     "prettier": "3.2.4",
     "typescript": "5.3.3"
+  },
+  "manifest": {
+    "host_permissions": [
+      "https://www.property.com.au/*",
+      "https://www.walkscore.com/*"
+    ],
+    "permissions": [
+      "declarativeNetRequest",
+      "storage"
+    ]
   }
 }
