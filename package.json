@@ -38,6 +38,11 @@
       "declarativeNetRequest",
       "offscreen",
       "storage"
-    ]
+    ],
+    "browser_specific_settings": {
+      "gecko": {
+        "id": "$FIREFOX_EXTENSION_ID"
+      }
+    }
   }
 }

@@ -2,7 +2,11 @@
 
 Take the guess work out of house hunting 🎉
 
-Reveals the hidden price range for property advertised on [Domain](https://www.domain.com.au) and [realestate.com.au](https://www.realestate.com.au).
+Reveals the hidden price range for property advertised on:
+
+- [Domain](https://www.domain.com.au)
+- [realestate.com.au](https://www.realestate.com.au)
+- [realcommercial.com.au](https://www.realcommercial.com.au)
 
 [<img src="https://cdn.buymeacoffee.com/buttons/v2/default-orange.png" width="150" />](https://www.buymeacoffee.com/cheesestringer)
 

@@ -5,9 +5,10 @@ import { useIntersectionObserver } from '~hooks/useObserver';
 interface PropertyInsightsProps {
   cacheKey: string;
   address: string;
+  retail?: boolean;
 }
 
-export const PropertyInsights = ({ cacheKey, address }: PropertyInsightsProps) => {
+export const PropertyInsights = ({ cacheKey, address, retail = true }: PropertyInsightsProps) => {
   const [isVisible, containerRef] = useIntersectionObserver();
 
   const [loading, setLoading] = useState(true);
@@ -18,9 +19,9 @@ export const PropertyInsights = ({ cacheKey, address }: PropertyInsightsProps) =
   const getPropertyInsights = async () => {
     try {
       const response = await chrome.runtime.sendMessage({ type: 'getPropertyInsights', cacheKey, address });
-      setValue(response.value);
-      setValueConfidence(response.confidence);
-      setPropertyUrl(response.url);
+      setValue(response?.value);
+      setValueConfidence(response?.confidence);
+      setPropertyUrl(response?.url);
     } catch (error) {
       console.log('Failed to find property insights', error);
     } finally {
@@ -51,8 +52,12 @@ export const PropertyInsights = ({ cacheKey, address }: PropertyInsightsProps) =
       <span
         ref={containerRef}
         className="item-label"
-        title="The PropTrack value esimate is calculated using automated statistical models based on available local property data, including the type of property, recent sales and local price trends.">
-        PropTrack value:
+        title={
+          retail
+            ? 'The PropTrack value esimate is calculated using automated statistical models based on available local property data, including the type of property, recent sales and local price trends.'
+            : null
+        }>
+        {retail ? 'PropTrack value' : 'Property insights'}:
       </span>
       <span>
         {loading ? (

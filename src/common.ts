@@ -1,4 +1,4 @@
-import { keyPrefix, multipliers, oneDayInMs } from '~constants';
+import { multipliers, oneDayInMs } from '~constants';
 import type { PropertyCache } from '~models';
 
 export const isDevelopment = () => {
@@ -13,14 +13,19 @@ export const getMiddle = (lower: number, upper: number) => {
   return Math.round((lower + upper) / 2);
 };
 
-export const buggerAllChange = (first: number, second: number) => {
-  return (first / second) * 100 > 99.6;
+export const buggerAllChange = (first: number, second: number, percentage = 99.6) => {
+  return (first / second) * 100 > percentage;
 };
 
 export const roundUp = (value: number) => {
-  if (value < 1_000_000) {
-    return Math.round(value / 5000) * 5000;
+  if (value > 5_000_000) {
+    return Math.round(value / 1_000_000) * 1_000_000;
   }
+
+  if (value > 1_000_000) {
+    return Math.round(value / 100_000) * 100_000;
+  }
+
   return Math.round(value / 10_000) * 10_000;
 };
 
