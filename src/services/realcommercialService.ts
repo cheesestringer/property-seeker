@@ -1,7 +1,19 @@
+import Bottleneck from 'bottleneck';
 import { buggerAllChange, getMiddle, isDevelopment, roundUp, toCurrencyFormat, updateBrowserCache } from '~common';
 
+const limiter = new Bottleneck({
+  reservoir: 3,
+  reservoirRefreshAmount: 3,
+  reservoirRefreshInterval: 1000,
+  maxConcurrent: 1
+});
+
+const realcommercialRateLimitedFetch = (url: string | URL | globalThis.Request, options?: RequestInit) => {
+  return limiter.schedule(() => fetch(url, options));
+};
+
 export const getProperty = async (cacheKey: string, id: string): Promise<Realcommerical.ModifiedPropertyResponse> => {
-  const response = await fetch(`https://api.realcommercial.com.au/listing-ui/listings/${id}`, {
+  const response = await realcommercialRateLimitedFetch(`https://api.realcommercial.com.au/listing-ui/listings/${id}`, {
     headers: { 'content-type': 'application/json' }
   });
 
@@ -80,7 +92,7 @@ const getPrice = async (summary: Realcommerical.PropertyResponse, signal: AbortS
   const maxRequests = 14;
   for (let i = 0; i < maxRequests; i++) {
     try {
-      const response = await fetch('https://api.realcommercial.com.au/listing-ui/searches?featureFlags=marketTrendsSlice3', {
+      const response = await realcommercialRateLimitedFetch('https://api.realcommercial.com.au/listing-ui/searches?featureFlags=marketTrendsSlice3', {
         headers: { 'content-type': 'application/json' },
         method: 'POST',
         body: JSON.stringify({

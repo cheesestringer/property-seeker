@@ -1,4 +1,16 @@
+import Bottleneck from 'bottleneck';
 import { cacheIsValid, convertToPrettyNumber, getBrowserCache, isDevelopment, updateBrowserCache } from '~common';
+
+const limiter = new Bottleneck({
+  reservoir: 2,
+  reservoirRefreshAmount: 2,
+  reservoirRefreshInterval: 1000,
+  maxConcurrent: 1
+});
+
+const realestateRateLimitedFetch = (url: string | URL | globalThis.Request, options?: RequestInit) => {
+  return limiter.schedule(() => fetch(url, options));
+};
 
 const extractPrice = (text: string) => {
   const cleaned = text.replace(/\\/g, '');
@@ -32,7 +44,7 @@ export const getPrice = async (url: string): Promise<string> => {
       return cache.price;
     }
 
-    const response = await fetch(url);
+    const response = await realestateRateLimitedFetch(url);
     const text = await response.text();
     const price = extractPrice(text);
     if (price) {

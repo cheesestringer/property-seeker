@@ -1,4 +1,16 @@
+import Bottleneck from 'bottleneck';
 import { buggerAllChange, getMiddle, isDevelopment, roundUp, toCurrencyFormat, updateBrowserCache } from '~common';
+
+const limiter = new Bottleneck({
+  reservoir: 3,
+  reservoirRefreshAmount: 3,
+  reservoirRefreshInterval: 1000,
+  maxConcurrent: 1
+});
+
+const domainRateLimitedFetch = (url: string | URL | globalThis.Request, options?: RequestInit) => {
+  return limiter.schedule(() => fetch(url, options));
+};
 
 // Search won't work if the filter value exceeds what's available on the UI
 const getFilterMax = (value: number) => {
@@ -99,7 +111,7 @@ export const getPropertyType = (value: string) => {
 
 export const getPropertyDetails = async (url: string): Promise<PropertyResponse> => {
   try {
-    const response = await fetch(url, {
+    const response = await domainRateLimitedFetch(url, {
       headers: { accept: 'application/json' }
     });
 
@@ -148,7 +160,7 @@ const getPrice = async (id: number, mode: string, type: string, location: string
   for (let i = 0; i < maxRequests; i++) {
     const url = `${window.location.origin}/${mode}/${location}/${type}/?price=${searchValue}-${maximum}${filter}`;
     try {
-      const response = await fetch(url, {
+      const response = await domainRateLimitedFetch(url, {
         headers: { accept: 'application/json' },
         signal
       });
