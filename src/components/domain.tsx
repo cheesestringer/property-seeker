@@ -1,9 +1,9 @@
 import logo from 'data-base64:../../assets/logo.svg';
 import type { PlasmoCSUIProps } from 'plasmo';
 import { useEffect, useState, type FC } from 'react';
-import { cacheIsValid, getBrowserCache, toCurrencyFormat, updateBrowserCache } from '~common';
+import { cacheIsValid, getBrowserCache } from '~common';
 import { propertySeeker, seeking } from '~constants';
-import { getFilter, getPrice, getPropertyDetails, getPropertyType } from '~services/domainService';
+import { getAndCachePrice, getFilter, getPropertyDetails, getPropertyType } from '~services/domainService';
 import { PropertyInsights } from './propertyInsights';
 import { ViewOnGitHub } from './viewOnGitHub';
 import { ViewOnMaps } from './viewOnMaps';
@@ -12,7 +12,6 @@ import { WalkScore } from './walkScore';
 
 export const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
   const { element } = anchor;
-  const [message, setMessage] = useState('');
   const [cacheKey, setCacheKey] = useState<string>(null);
   const [range, setRange] = useState<string>(null);
   const controller = new AbortController();
@@ -24,22 +23,21 @@ export const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
   const handleListing = async () => {
     const testid = element.attributes.getNamedItem('data-testid')?.value;
     if (testid === 'listing-details__listing-summary-title-name') {
-      setMessage(`Projects not supported`);
+      setRange(`Projects not supported`);
       return;
     }
 
     // Handle property listings
     const listingSummary = element.querySelector<HTMLAnchorElement>('[data-testid="listing-details__summary-title"]');
     if (listingSummary) {
-      const price = await getPropertyPrice(element.baseURI);
-      setRange(toCurrencyFormat(price));
+      await getPropertyPrice(element.baseURI);
       return;
     }
 
     const container = element.parentElement;
     const link = container.querySelector('a');
     if (!link?.href) {
-      setMessage(`Projects not supported`);
+      setRange(`Projects not supported`);
       return;
     }
 
@@ -48,8 +46,7 @@ export const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
             observer.disconnect();
-            const price = await getPropertyPrice(link.href);
-            setRange(toCurrencyFormat(price));
+            await getPropertyPrice(link.href);
           }
         }
       },
@@ -59,14 +56,15 @@ export const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
     observer.observe(container);
   };
 
-  const getPropertyPrice = async (href: string): Promise<number | string> => {
+  const getPropertyPrice = async (href: string) => {
     const url = new URL(href);
     const cleanUrl = url.origin + url.pathname;
     setCacheKey(cleanUrl);
 
     const cache = await getBrowserCache(cleanUrl);
     if (cacheIsValid(cache.timestamp) && cache?.price) {
-      return cache.price;
+      setRange(cache.price);
+      return;
     }
 
     const details = await getPropertyDetails(cleanUrl);
@@ -80,20 +78,14 @@ export const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
 
     const type = getPropertyType(listingSummary.propertyType);
     if (!type) {
-      setMessage(`Unhandled type '${listingSummary.propertyType}'`);
+      setRange(`Unhandled type '${listingSummary.propertyType}'`);
       return;
     }
 
     const searchMode = listingSummary.mode === 'buy' ? 'sale' : 'sold-listings';
     const filter = getFilter(listingSummary, street);
-    const price = await getPrice(id, searchMode, type, footer.suburb.slug, filter, controller.signal);
-    await updateBrowserCache(cleanUrl, cache => {
-      cache.price = toCurrencyFormat(price);
-      cache.timestamp = Date.now();
-      return cache;
-    });
-
-    return price;
+    const price = await getAndCachePrice(cleanUrl, id, searchMode, type, footer.suburb.slug, filter, controller.signal);
+    setRange(price);
   };
 
   const address =

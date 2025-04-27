@@ -11,7 +11,6 @@ import { WalkScore } from './walkScore';
 
 export const Realestate: FC<PlasmoCSUIProps> = ({ anchor }) => {
   const { element } = anchor;
-  const [message, setMessage] = useState('');
   const [cacheKey, setCacheKey] = useState<string>(null);
   const [range, setRange] = useState<string>(null);
 
@@ -25,15 +24,15 @@ export const Realestate: FC<PlasmoCSUIProps> = ({ anchor }) => {
       const cleanUrl = url.origin + url.pathname;
 
       if (cleanUrl.toLocaleLowerCase().includes('/project/')) {
-        setMessage('Projects not supported');
+        setRange('Projects not supported');
         return;
       }
 
       setCacheKey(cleanUrl);
       const price = await getPrice(cleanUrl);
-      setRange(price);
+      setRange(price ?? 'Unavailable');
     } catch (error) {
-      setMessage('Failed to get price 😵');
+      setRange('Failed to get price 😵');
     }
   };
 

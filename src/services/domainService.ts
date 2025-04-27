@@ -1,4 +1,4 @@
-import { buggerAllChange, getMiddle, isDevelopment, roundDown, roundUp } from '~common';
+import { buggerAllChange, getMiddle, isDevelopment, roundDown, roundUp, toCurrencyFormat, updateBrowserCache } from '~common';
 
 // Search won't work if the filter value exceeds what's available on the UI
 const getFilterMax = (value: number) => {
@@ -114,7 +114,17 @@ export const getPropertyDetails = async (url: string): Promise<PropertyResponse>
   }
 };
 
-export const getPrice = async (id: number, mode: string, type: string, location: string, filter: string, signal: AbortSignal): Promise<number> => {
+export const getAndCachePrice = async (cacheKey: string, id: number, mode: string, type: string, location: string, filter: string, signal: AbortSignal): Promise<string> => {
+  const price = await getPrice(id, mode, type, location, filter, signal);
+  await updateBrowserCache(cacheKey, cache => {
+    cache.price = toCurrencyFormat(price);
+    cache.timestamp = Date.now();
+    return cache;
+  });
+  return toCurrencyFormat(price);
+}
+
+const getPrice = async (id: number, mode: string, type: string, location: string, filter: string, signal: AbortSignal): Promise<number> => {
   // TODO: Need to fix properties that exist outside of the max
   let minimum = 50_000;
   let maximum = 30_000_000;

@@ -1,5 +1,73 @@
+import OFFSCREEN_DOCUMENT_PATH from 'url:~src/offscreen/offscreen.html';
 import { cacheIsValid, getBrowserCache, updateBrowserCache } from '~common';
 import { sevenDaysInMs } from '~constants';
+
+let propertySession = false;
+const createPropertySession = async () => {
+  // TODO: Might also need a timer if challenges are updated
+  if (propertySession) {
+    return;
+  }
+
+  try {
+    await createOffscreenDocument('https://www.property.com.au');
+    propertySession = true;
+  } catch (error) {
+    console.log('Failed to create property session');
+  }
+};
+
+let creating: Promise<void>;
+const createOffscreenDocument = async (url: string) => {
+  const existingContexts = await chrome.runtime.getContexts({
+    contextTypes: [chrome.runtime.ContextType.OFFSCREEN_DOCUMENT],
+    documentUrls: [OFFSCREEN_DOCUMENT_PATH]
+  });
+
+  if (existingContexts.length > 0) {
+    return;
+  }
+
+  if (creating) {
+    await creating;
+  } else {
+    console.log('Opening offscreen document');
+    creating = chrome.offscreen.createDocument({
+      url: OFFSCREEN_DOCUMENT_PATH,
+      reasons: [chrome.offscreen.Reason.DOM_SCRAPING],
+      justification: 'Solve the javascript challenges to generate cookies and enable scraping'
+    });
+
+    await creating;
+    creating = null;
+
+    chrome.runtime.sendMessage({ type: 'openDocument', url });
+  }
+};
+
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.declarativeNetRequest.updateDynamicRules({
+    addRules: [
+      {
+        id: 1,
+        priority: 1,
+        action: {
+          type: chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
+          responseHeaders: [
+            { header: 'Content-Security-Policy', operation: chrome.declarativeNetRequest.HeaderOperation.REMOVE },
+            { header: 'X-Frame-Options', operation: chrome.declarativeNetRequest.HeaderOperation.REMOVE }
+          ]
+        },
+        condition: {
+          initiatorDomains: [chrome.runtime.id],
+          urlFilter: '||property.com.au/',
+          resourceTypes: [chrome.declarativeNetRequest.ResourceType.SUB_FRAME]
+        }
+      }
+    ],
+    removeRuleIds: [1]
+  });
+});
 
 // Avoid async until https://issues.chromium.org/issues/40753031 is fixed.
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
@@ -13,6 +81,11 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
     getWalkScore(request.cacheKey, request.address).then(data => {
       sendResponse(data);
     });
+  }
+
+  if (request.type === 'closeDocument') {
+    console.log('Closing offscreen document');
+    chrome.offscreen.closeDocument();
   }
 
   return true;
@@ -31,6 +104,8 @@ const getPropertyInsights = async (cacheKey: string, address: string) => {
         url: cache.propertyUrl
       };
     }
+
+    await createPropertySession();
 
     const suggestion = await getSuggestedAddress(address);
     if (suggestion === null) {
