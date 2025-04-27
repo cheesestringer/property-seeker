@@ -8,6 +8,10 @@ interface PropertyResponse {
   props: {
     id: number;
     listingSummary: ListingSummary;
+    domainSays: {
+      firstListedDate: string;
+      updatedDate: string;
+    };
     street: string;
     suburb: string;
     stateAbbreviation: string;

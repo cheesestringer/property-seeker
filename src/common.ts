@@ -24,13 +24,6 @@ export const roundUp = (value: number) => {
   return Math.round(value / 10_000) * 10_000;
 };
 
-export const roundDown = (value: number) => {
-  if (value < 1_000_000) {
-    return Math.floor(value / 5000) * 5000;
-  }
-  return Math.floor(value / 10_000) * 10_000;
-};
-
 export const getBrowserCache = async (key: string): Promise<PropertyCache> => {
   try {
     const storage = await chrome.storage.local.get(key);

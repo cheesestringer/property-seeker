@@ -1,6 +1,8 @@
 export interface PropertyCache {
   timestamp: number;
   price: string;
+  listedDate: string;
+  updatedDate: string;
 
   propertyValue: string;
   propertyConfidence: string;

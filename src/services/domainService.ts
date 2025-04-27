@@ -1,4 +1,4 @@
-import { buggerAllChange, getMiddle, isDevelopment, roundDown, roundUp, toCurrencyFormat, updateBrowserCache } from '~common';
+import { buggerAllChange, getMiddle, isDevelopment, roundUp, toCurrencyFormat, updateBrowserCache } from '~common';
 
 // Search won't work if the filter value exceeds what's available on the UI
 const getFilterMax = (value: number) => {
@@ -107,14 +107,28 @@ export const getPropertyDetails = async (url: string): Promise<PropertyResponse>
       throw new Error(`${response.status}`);
     }
 
-    return (await response.json()) as PropertyResponse;
+    const data = (await response.json()) as PropertyResponse;
+    await updateBrowserCache(url, cache => {
+      cache.listedDate = data.props.domainSays.firstListedDate;
+      cache.updatedDate = data.props.domainSays.updatedDate;
+      return cache;
+    });
+    return data;
   } catch (error) {
     console.log(error);
     throw error;
   }
 };
 
-export const getAndCachePrice = async (cacheKey: string, id: number, mode: string, type: string, location: string, filter: string, signal: AbortSignal): Promise<string> => {
+export const getAndCachePrice = async (
+  cacheKey: string,
+  id: number,
+  mode: string,
+  type: string,
+  location: string,
+  filter: string,
+  signal: AbortSignal
+): Promise<string> => {
   const price = await getPrice(id, mode, type, location, filter, signal);
   await updateBrowserCache(cacheKey, cache => {
     cache.price = toCurrencyFormat(price);
@@ -122,7 +136,7 @@ export const getAndCachePrice = async (cacheKey: string, id: number, mode: strin
     return cache;
   });
   return toCurrencyFormat(price);
-}
+};
 
 const getPrice = async (id: number, mode: string, type: string, location: string, filter: string, signal: AbortSignal): Promise<number> => {
   // TODO: Need to fix properties that exist outside of the max
@@ -165,10 +179,10 @@ const getPrice = async (id: number, mode: string, type: string, location: string
         if (buggerAllChange(searchValue, maximum)) {
           if (isDevelopment()) {
             console.table({ search: searchValue.toLocaleString(), min: minimum.toLocaleString(), max: maximum.toLocaleString() });
-            console.log(`Property ${id} missing: $${maximum.toLocaleString()} after ${i + 1} requests.`, roundDown(maximum));
+            console.log(`Property ${id} missing: $${minimum.toLocaleString()} after ${i + 1} requests.`, roundUp(minimum));
           }
 
-          return roundDown(maximum);
+          return roundUp(minimum);
         }
       }
     } catch (error) {

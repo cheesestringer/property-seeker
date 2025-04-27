@@ -4,6 +4,7 @@ import { useEffect, useState, type FC } from 'react';
 import { cacheIsValid, getBrowserCache } from '~common';
 import { propertySeeker, seeking } from '~constants';
 import { getAndCachePrice, getFilter, getPropertyDetails, getPropertyType } from '~services/domainService';
+import { DaysSince } from './daysSince';
 import { PropertyInsights } from './propertyInsights';
 import { ViewOnGitHub } from './viewOnGitHub';
 import { ViewOnMaps } from './viewOnMaps';
@@ -14,6 +15,9 @@ export const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
   const { element } = anchor;
   const [cacheKey, setCacheKey] = useState<string>(null);
   const [range, setRange] = useState<string>(null);
+  const [listedDate, setListedDate] = useState<string>(null);
+  const [updatedDate, setUpdatedDate] = useState<string>(null);
+
   const controller = new AbortController();
 
   useEffect(() => {
@@ -63,6 +67,8 @@ export const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
 
     const cache = await getBrowserCache(cleanUrl);
     if (cacheIsValid(cache.timestamp) && cache?.price) {
+      setListedDate(cache.listedDate);
+      setUpdatedDate(cache.updatedDate);
       setRange(cache.price);
       return;
     }
@@ -71,6 +77,9 @@ export const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
     if (details == null) {
       return;
     }
+
+    setListedDate(details.props.domainSays.firstListedDate);
+    setUpdatedDate(details.props.domainSays?.updatedDate);
 
     const {
       props: { id, listingSummary, street, footer }
@@ -108,6 +117,9 @@ export const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
           </div>
           <div className="item extra">
             <PropertyInsights cacheKey={cacheKey} address={address} />
+          </div>
+          <div className="item extra">
+            <DaysSince name="Listed" date={listedDate} />
           </div>
         </div>
       </div>
