@@ -2,6 +2,7 @@ import logo from 'data-base64:../../assets/logo.svg';
 import type { PlasmoCSUIProps } from 'plasmo';
 import { useEffect, useState, type FC } from 'react';
 import { propertySeeker, seeking } from '~constants';
+import { useIntersectionObserver } from '~hooks/useObserver';
 import { getPrice } from '~services/realestateService';
 import { PropertyInsights } from './propertyInsights';
 import { ViewOnGitHub } from './viewOnGitHub';
@@ -11,12 +12,16 @@ import { WalkScore } from './walkScore';
 
 export const Realestate: FC<PlasmoCSUIProps> = ({ anchor }) => {
   const { element } = anchor;
+  const [isVisible, containerRef] = useIntersectionObserver<HTMLDivElement>();
+
   const [cacheKey, setCacheKey] = useState<string>(null);
   const [range, setRange] = useState<string>(null);
 
   useEffect(() => {
-    handleListing();
-  }, []);
+    if (isVisible) {
+      handleListing();
+    }
+  }, [isVisible]);
 
   const getListingPrice = async (href: string) => {
     try {
@@ -50,22 +55,14 @@ export const Realestate: FC<PlasmoCSUIProps> = ({ anchor }) => {
       return;
     }
 
+    // Handle list listings
     if (element.className === 'residential-card__content') {
       const link = element.querySelector<HTMLAnchorElement>('.residential-card__address-heading > a');
       if (!link?.href) {
         return;
       }
 
-      const observer = new IntersectionObserver(async entries => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            observer.disconnect();
-            getListingPrice(link.href);
-          }
-        }
-      });
-
-      observer.observe(anchor.element);
+      getListingPrice(link.href);
     }
   };
 
@@ -75,9 +72,9 @@ export const Realestate: FC<PlasmoCSUIProps> = ({ anchor }) => {
   const address = listAddress ?? propertyAddress ?? mapAddress;
 
   return (
-    <div className="card" onClick={e => e.stopPropagation()}>
+    <div className="card" onClick={e => e.stopPropagation()} ref={containerRef}>
       <div className="card-header">
-        <img className="logo" src={logo} alt={propertySeeker} title={propertySeeker} />
+        <img className="logo" src={logo} alt={propertySeeker + ' logo'} title={propertySeeker} />
         <span>Property Seeker</span>
       </div>
       <div className="card-body">

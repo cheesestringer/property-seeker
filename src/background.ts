@@ -46,27 +46,31 @@ const createOffscreenDocument = async (url: string) => {
 };
 
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.declarativeNetRequest.updateDynamicRules({
-    addRules: [
-      {
-        id: 1,
-        priority: 1,
-        action: {
-          type: chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
-          responseHeaders: [
-            { header: 'Content-Security-Policy', operation: chrome.declarativeNetRequest.HeaderOperation.REMOVE },
-            { header: 'X-Frame-Options', operation: chrome.declarativeNetRequest.HeaderOperation.REMOVE }
-          ]
-        },
-        condition: {
-          initiatorDomains: [chrome.runtime.id],
-          urlFilter: '||property.com.au/',
-          resourceTypes: [chrome.declarativeNetRequest.ResourceType.SUB_FRAME]
+  try {
+    chrome.declarativeNetRequest.updateDynamicRules({
+      addRules: [
+        {
+          id: 1,
+          priority: 1,
+          action: {
+            type: chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
+            responseHeaders: [
+              { header: 'Content-Security-Policy', operation: chrome.declarativeNetRequest.HeaderOperation.REMOVE },
+              { header: 'X-Frame-Options', operation: chrome.declarativeNetRequest.HeaderOperation.REMOVE }
+            ]
+          },
+          condition: {
+            initiatorDomains: [chrome.runtime.id],
+            urlFilter: '||property.com.au/',
+            resourceTypes: [chrome.declarativeNetRequest.ResourceType.SUB_FRAME]
+          }
         }
-      }
-    ],
-    removeRuleIds: [1]
-  });
+      ],
+      removeRuleIds: [1]
+    });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 // Avoid async until https://issues.chromium.org/issues/40753031 is fixed.

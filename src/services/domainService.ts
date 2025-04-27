@@ -2,10 +2,10 @@ import Bottleneck from 'bottleneck';
 import { buggerAllChange, getMiddle, isDevelopment, roundUp, toCurrencyFormat, updateBrowserCache } from '~common';
 
 const limiter = new Bottleneck({
-  reservoir: 3,
-  reservoirRefreshAmount: 3,
+  reservoir: 5,
+  reservoirRefreshAmount: 5,
   reservoirRefreshInterval: 1000,
-  maxConcurrent: 1
+  maxConcurrent: 2
 });
 
 const domainRateLimitedFetch = (url: string | URL | globalThis.Request, options?: RequestInit) => {

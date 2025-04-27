@@ -3,6 +3,7 @@ import type { PlasmoCSUIProps } from 'plasmo';
 import { useEffect, useState, type FC } from 'react';
 import { cacheIsValid, getBrowserCache } from '~common';
 import { propertySeeker, seeking } from '~constants';
+import { useIntersectionObserver } from '~hooks/useObserver';
 import { getAndCachePrice, getFilter, getPropertyDetails, getPropertyType } from '~services/domainService';
 import { DaysSince } from './daysSince';
 import { PropertyInsights } from './propertyInsights';
@@ -13,6 +14,8 @@ import { WalkScore } from './walkScore';
 
 export const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
   const { element } = anchor;
+  const [isVisible, containerRef] = useIntersectionObserver<HTMLDivElement>();
+
   const [cacheKey, setCacheKey] = useState<string>(null);
   const [range, setRange] = useState<string>(null);
   const [listedDate, setListedDate] = useState<string>(null);
@@ -21,8 +24,10 @@ export const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
   const controller = new AbortController();
 
   useEffect(() => {
-    handleListing();
-  }, []);
+    if (isVisible) {
+      handleListing();
+    }
+  }, [isVisible]);
 
   const handleListing = async () => {
     const testid = element.attributes.getNamedItem('data-testid')?.value;
@@ -45,19 +50,8 @@ export const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
       return;
     }
 
-    const observer = new IntersectionObserver(
-      async entries => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            observer.disconnect();
-            await getPropertyPrice(link.href);
-          }
-        }
-      },
-      { rootMargin: '-10px' }
-    );
-
-    observer.observe(container);
+    // Handle list and map listings
+    await getPropertyPrice(link.href);
   };
 
   const getPropertyPrice = async (href: string) => {
@@ -102,9 +96,9 @@ export const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
     element.parentElement.parentElement.querySelector('[data-testid="address-wrapper"]')?.textContent;
 
   return (
-    <div className="card" onClick={e => e.stopPropagation()}>
+    <div className="card" onClick={e => e.stopPropagation()} ref={containerRef}>
       <div className="card-header">
-        <img className="logo" src={logo} alt={propertySeeker} title={propertySeeker} />
+        <img className="logo" src={logo} alt={propertySeeker + ' logo'} title={propertySeeker} />
         <span>Property Seeker</span>
       </div>
       <div className="card-body">

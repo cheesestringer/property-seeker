@@ -16,9 +16,9 @@ export const getStyle: PlasmoGetStyle = () => {
 
 export const getInlineAnchorList: PlasmoGetInlineAnchorList = async () => {
   const elements = [...document.querySelectorAll<HTMLElement>('[data-testid="listing-card-price-wrapper"]')];
-  return elements.map(element => ({
-    element: element?.parentElement
-  }));
+  return elements
+    .filter(element => element?.parentElement?.parentElement?.nodeName !== 'A') // Remove project elements
+    .map(element => ({ element: element?.parentElement }));
 };
 
 const DomainListing = ({ anchor }) => {

@@ -9,7 +9,7 @@ interface PropertyInsightsProps {
 }
 
 export const PropertyInsights = ({ cacheKey, address, retail = true }: PropertyInsightsProps) => {
-  const [isVisible, containerRef] = useIntersectionObserver();
+  const [isVisible, containerRef] = useIntersectionObserver<HTMLSpanElement>();
 
   const [loading, setLoading] = useState(true);
   const [value, setValue] = useState('');
@@ -50,14 +50,14 @@ export const PropertyInsights = ({ cacheKey, address, retail = true }: PropertyI
   return (
     <>
       <span
-        ref={containerRef}
         className="item-label"
         title={
           retail
             ? 'The PropTrack value esimate is calculated using automated statistical models based on available local property data, including the type of property, recent sales and local price trends.'
             : null
-        }>
-        {retail ? 'PropTrack value' : 'Property insights'}:
+        }
+        ref={containerRef}>
+        {retail ? 'Value estimate' : 'Property insights'}:
       </span>
       <span>
         {loading ? (

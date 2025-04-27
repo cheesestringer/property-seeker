@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState, type RefObject } from 'react';
 
-export const useIntersectionObserver = (threshold = 0.1): [boolean, RefObject<HTMLDivElement>] => {
+export const useIntersectionObserver = <T extends HTMLElement>(threshold = 0.1): [boolean, RefObject<T>] => {
   const [isVisible, setIsVisible] = useState(false);
-  const elementRef = useRef<HTMLDivElement>(null);
+  const elementRef = useRef<T>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
