@@ -3,6 +3,17 @@ import styles from 'data-text:../styles/styles.css';
 import type { PlasmoCSConfig, PlasmoGetInlineAnchorList, PlasmoGetStyle } from 'plasmo';
 import { Realestate } from '../components/realestate';
 
+const observer = new MutationObserver(() => {
+  document.querySelectorAll('.residential-card--compressed-view')
+    .forEach((el) => el.classList.remove('residential-card--compressed-view'))
+})
+
+observer.observe(document.body, {
+  childList: true,
+  subtree: true
+})
+
+
 export const config: PlasmoCSConfig = {
   matches: ['https://www.realestate.com.au/*']
 };
