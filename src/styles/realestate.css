@@ -1,7 +1,6 @@
 @container (max-width: 335px) {
   .card-body {
     text-align: left;
-    width: 26.25rem;
   }
 
   .item {
