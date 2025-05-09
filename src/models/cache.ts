@@ -3,6 +3,7 @@ export interface PropertyCache {
   price: string;
   listedDate: string;
   updatedDate: string;
+  hidden: boolean;
 
   propertyValue: string;
   propertyConfidence: string;

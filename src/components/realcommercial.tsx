@@ -1,7 +1,7 @@
 import logo from 'data-base64:../../assets/logo.svg';
 import type { PlasmoCSUIProps } from 'plasmo';
 import { useEffect, useState, type FC } from 'react';
-import { cacheIsValid, getBrowserCache } from '~common';
+import { cacheIsValid, getBrowserCache, getCleanUrl } from '~common';
 import { propertySeeker, seeking } from '~constants';
 import { useIntersectionObserver } from '~hooks/useObserver';
 import { getAndCachePrice, getProperty } from '~services/realcommercialService';
@@ -31,8 +31,7 @@ export const Realcommercial: FC<PlasmoCSUIProps> = ({ anchor }) => {
 
   const getPropertyPrice = async (href: string) => {
     try {
-      const url = new URL(href);
-      const cleanUrl = url.origin + url.pathname;
+      const cleanUrl = getCleanUrl(href);
       setCacheKey(cleanUrl);
 
       const cache = await getBrowserCache(cleanUrl);

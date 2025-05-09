@@ -74,3 +74,13 @@ export const convertToPrettyNumber = (value: string) => {
     return value;
   }
 };
+
+export const getCleanUrl = (href: string) => {
+  try {
+    const url = new URL(href);
+    return url.origin + url.pathname;
+  } catch (error) {
+    console.log('Failed to create clean url', href);
+    throw error;
+  }
+}

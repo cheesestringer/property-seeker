@@ -1,7 +1,7 @@
 import realestateStyles from 'data-text:../styles/realestate.css';
 import styles from 'data-text:../styles/styles.css';
 import type { PlasmoCSConfig, PlasmoGetInlineAnchorList, PlasmoGetStyle } from 'plasmo';
-import { Realestate } from '../components/realestate';
+import { Realestate } from '~components/realestate';
 
 export const config: PlasmoCSConfig = {
   matches: ['https://www.realestate.com.au/*']

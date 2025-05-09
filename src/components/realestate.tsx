@@ -1,6 +1,7 @@
 import logo from 'data-base64:../../assets/logo.svg';
 import type { PlasmoCSUIProps } from 'plasmo';
 import { useEffect, useState, type FC } from 'react';
+import { getCleanUrl } from '~common';
 import { propertySeeker, seeking } from '~constants';
 import { useIntersectionObserver } from '~hooks/useObserver';
 import { getPrice } from '~services/realestateService';
@@ -25,8 +26,7 @@ export const Realestate: FC<PlasmoCSUIProps> = ({ anchor }) => {
 
   const getListingPrice = async (href: string) => {
     try {
-      const url = new URL(href);
-      const cleanUrl = url.origin + url.pathname;
+      const cleanUrl = getCleanUrl(href);
 
       if (cleanUrl.toLocaleLowerCase().includes('/project/')) {
         setRange('Projects not supported');
