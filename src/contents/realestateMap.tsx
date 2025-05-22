@@ -22,7 +22,7 @@ const RealestateMap = ({ anchor }) => {
   }
 
   return (
-    <div style={{ position: 'absolute', top: '-15px', width: '100%' }}>
+    <div style={{ position: 'absolute', top: '-15px', width: '82%' }}>
       <Realestate anchor={anchor} />
     </div>
   );

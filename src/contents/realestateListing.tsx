@@ -3,15 +3,20 @@ import styles from 'data-text:../styles/styles.css';
 import type { PlasmoCSConfig, PlasmoGetInlineAnchorList, PlasmoGetStyle } from 'plasmo';
 import { Realestate } from '../components/realestate';
 
-const observer = new MutationObserver(() => {
-  document.querySelectorAll('.residential-card--compressed-view')
-    .forEach((el) => el.classList.remove('residential-card--compressed-view'))
-})
+// contains each li element
+const propertyList = document.querySelector('ul.tiered-results');
 
-observer.observe(document.body, {
-  childList: true,
-  subtree: true
-})
+if (propertyList) {
+  const observer = new MutationObserver(() => {
+    propertyList.querySelectorAll('article.residential-card--compressed-view')
+      .forEach((el) => el.classList.remove('residential-card--compressed-view'));
+  });
+
+  observer.observe(propertyList, {
+    childList: true,
+    subtree: true
+  });
+}
 
 
 export const config: PlasmoCSConfig = {
