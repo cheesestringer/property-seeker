@@ -13,7 +13,7 @@ const createPropertySession = async () => {
     await createOffscreenDocument('https://www.property.com.au');
     propertySession = true;
   } catch (error) {
-    // console.log('Failed to create property session');
+    console.log('Failed to create property session');
   }
 };
 
@@ -31,7 +31,7 @@ const createOffscreenDocument = async (url: string) => {
   if (creating) {
     await creating;
   } else {
-    // console.log('Opening offscreen document');
+    console.log('Opening offscreen document');
     creating = chrome.offscreen.createDocument({
       url: OFFSCREEN_DOCUMENT_PATH,
       reasons: [chrome.offscreen.Reason.DOM_SCRAPING],
@@ -69,7 +69,7 @@ chrome.runtime.onInstalled.addListener(() => {
       removeRuleIds: [1]
     });
   } catch (error) {
-    // console.log(error);
+    console.log(error);
   }
 });
 
@@ -88,7 +88,7 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   }
 
   if (request.type === 'closeDocument') {
-    // console.log('Closing offscreen document');
+    console.log('Closing offscreen document');
     chrome.offscreen.closeDocument();
   }
 
@@ -97,11 +97,11 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
 
 const getPropertyInsights = async (cacheKey: string, address: string) => {
   try {
-    // console.log(`Get property insights for ${address}`);
+    console.log(`Get property insights for ${address}`);
 
     const cache = await getBrowserCache(cacheKey);
     if (cacheIsValid(cache?.propertyTimestamp, sevenDaysInMs) && cache?.propertyUrl) {
-      // console.log('Using cached property insights');
+      console.log('Using cached property insights');
       return {
         value: cache.propertyValue,
         confidence: cache.propertyConfidence,
@@ -142,6 +142,7 @@ const getPropertyInsights = async (cacheKey: string, address: string) => {
     const landSizeMatch = data.match(landSizeRegex) || data.match(landSizeAltRegex);
     const floorSizeMatch = data.match(floorSizeRegex) || data.match(floorSizeAltRegex);
 
+
     const property = {
       value: valueMatch?.[1],
       confidence: valueConfidenceMatch?.[1],
@@ -163,7 +164,7 @@ const getPropertyInsights = async (cacheKey: string, address: string) => {
 
     return property;
   } catch (error) {
-    // console.log('Failed to get property data', address, error);
+    console.log('Failed to get property data', address, error);
   }
 };
 
@@ -247,11 +248,11 @@ const getPropertyUrl = (suggestion: Suggestion) => {
 
 const getWalkScore = async (cacheKey: string, address: string) => {
   try {
-    // console.log(`Get walk score for ${address}`);
+    console.log(`Get walk score for ${address}`);
 
     const cache = await getBrowserCache(cacheKey);
     if (cacheIsValid(cache?.walkScoreTimestamp, sevenDaysInMs) && cache?.walkScore) {
-      // console.log('Using cached walk score');
+      console.log('Using cached walk score');
       return {
         walkScore: cache.walkScore,
         transportScore: cache?.transportScore, // Transport score isn't gauranteed
@@ -289,7 +290,7 @@ const getWalkScore = async (cacheKey: string, address: string) => {
       url: response.url
     };
   } catch (error) {
-    // console.log('Failed to get walk score', address, error);
+    console.log('Failed to get walk score', address, error);
     return null;
   }
 };
@@ -355,7 +356,7 @@ const calculatePricePerSqm = (propertyValue: string, landSize: string): string =
     // Format to 2 decimal places
     return `$${pricePerSqm.toFixed(2)}/m²`;
   } catch (error) {
-    // console.log('Error calculating price per sqm:', error);
+    console.log('Error calculating price per sqm:', error);
     return null;
   }
 };
