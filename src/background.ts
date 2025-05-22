@@ -156,8 +156,8 @@ const getPropertyInsights = async (cacheKey: string, address: string) => {
       cache.propertyValue = property.value;
       cache.propertyConfidence = property.confidence;
       cache.propertyUrl = property.url;
-      // cache.propertyLandSize = property.landSize;
-      // cache.propertyFloorSize = property.floorSize;
+      cache.propertyLandSize = property.landSize;
+      cache.propertyFloorSize = property.floorSize;
       cache.propertyTimestamp = Date.now();
       return cache;
     });
