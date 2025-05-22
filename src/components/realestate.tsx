@@ -3,7 +3,7 @@ import type { PlasmoCSUIProps } from 'plasmo';
 import { useEffect, useState, type FC } from 'react';
 import { propertySeeker, seeking } from '~constants';
 import { useIntersectionObserver } from '~hooks/useObserver';
-import { getPrice } from '~services/realestateService';
+import { getPrice } from '~services/realEstateService';
 import { PropertyInsights } from './propertyInsights';
 import { ViewOnGitHub } from './viewOnGitHub';
 import { ViewOnMaps } from './viewOnMaps';
@@ -87,6 +87,9 @@ export const Realestate: FC<PlasmoCSUIProps> = ({ anchor }) => {
           </div>
           <div className="item">
             <PropertyInsights cacheKey={cacheKey} address={address} />
+          </div>
+          <div className="item property-sizes">
+            <PropertyInsights cacheKey={cacheKey} address={address} retail={false} showSizeOnly={true} />
           </div>
         </div>
       </div>

@@ -105,7 +105,9 @@ const getPropertyInsights = async (cacheKey: string, address: string) => {
       return {
         value: cache.propertyValue,
         confidence: cache.propertyConfidence,
-        url: cache.propertyUrl
+        url: cache.propertyUrl,
+        landSize: cache.propertyLandSize,
+        floorSize: cache.propertyFloorSize
       };
     }
 
@@ -126,19 +128,50 @@ const getPropertyInsights = async (cacheKey: string, address: string) => {
     const valueRegex = /data-testid="valuation-sub-brick-price-text"[^>]*>([\s\S]*?)<\/[^>]+>/;
     const valueConfidenceRegex = /data-testid="valuation-sub-brick-confidence"[^>]*>([\s\S]*?)<\/[^>]+>/;
 
+    // Extract land size and floor size information
+    const landSizeRegex = /title="Land size"[\s\S]*?<p[^>]*>([\w\d\s.²]+)<\/p>/;
+    const floorSizeRegex = /title="Floor area"[\s\S]*?<p[^>]*>([\w\d\s.²]+)<\/p>/;
+
+    // Fallback patterns if the above don't match
+    const landSizeAltRegex = /Land size[\s\S]*?>([\d.]+m²)<\//;
+    const floorSizeAltRegex = /Floor area[\s\S]*?>([\d.]+m²)<\//;
+
     const valueMatch = data.match(valueRegex);
     const valueConfidenceMatch = data.match(valueConfidenceRegex);
+    const landSizeMatch = data.match(landSizeRegex) || data.match(landSizeAltRegex);
+    const floorSizeMatch = data.match(floorSizeRegex) || data.match(floorSizeAltRegex);
+
+    // Debug logs
+    console.log('Land size match:', landSizeMatch?.[1] || 'not found');
+    console.log('Floor size match:', floorSizeMatch?.[1] || 'not found');
+
+    // Log the relevant HTML sections for debugging
+    const logHtmlSection = (pattern: string, label: string) => {
+      const index = data.indexOf(pattern);
+      if (index !== -1) {
+        console.log(`${label} HTML section:`, data.substring(index, index + 500));
+      } else {
+        console.log(`${label} pattern not found`);
+      }
+    };
+
+    logHtmlSection('Land size', 'Land size');
+    logHtmlSection('Floor area', 'Floor area');
 
     const property = {
       value: valueMatch?.[1],
       confidence: valueConfidenceMatch?.[1],
-      url: response.url
+      url: response.url,
+      landSize: landSizeMatch?.[1],
+      floorSize: floorSizeMatch?.[1]
     };
 
     await updateBrowserCache(cacheKey, cache => {
       cache.propertyValue = property.value;
       cache.propertyConfidence = property.confidence;
       cache.propertyUrl = property.url;
+      // cache.propertyLandSize = property.landSize;
+      // cache.propertyFloorSize = property.floorSize;
       cache.propertyTimestamp = Date.now();
       return cache;
     });

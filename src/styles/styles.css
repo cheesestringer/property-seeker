@@ -2,15 +2,19 @@
   z-index: 1 !important;
   cursor: auto;
 }
+
 a {
   text-decoration: none;
 }
+
 .logo {
   height: 40px;
 }
+
 .icon {
   height: 24px;
 }
+
 .card {
   flex: 1;
   border: 1px solid #ddd;
@@ -23,6 +27,7 @@ a {
 
   container-type: inline-size;
 }
+
 .card-header {
   display: flex;
   align-items: center;
@@ -31,17 +36,21 @@ a {
   gap: 10px;
   margin-bottom: 16px;
 }
+
 .card-body {
   text-align: center;
 }
+
 .card-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
 .items {
   margin-bottom: 16px;
 }
+
 .item {
   display: flex;
   justify-content: space-between;
@@ -49,10 +58,12 @@ a {
   font-size: 16px;
   margin-bottom: 8px;
 }
+
 .item-label {
   font-weight: bold;
   color: #333;
 }
+
 .confidence-badge {
   display: inline-block;
   padding: 2px 4px;
@@ -61,27 +72,33 @@ a {
   font-weight: bold;
   text-transform: capitalize;
 }
+
 .confidence-badge.high {
   background-color: #c8e6c9;
   color: #2e7d32;
 }
+
 .confidence-badge.medium {
   background-color: #fff9c4;
   color: #f9a825;
 }
+
 .confidence-badge.low {
   background-color: #ffcdd2;
   color: #c62828;
 }
+
 .confidence-badge.building {
   background-color: #e0e0e0;
   color: #757575;
 }
+
 .walk-score-container {
   display: flex;
   align-items: center;
   gap: 10px;
 }
+
 .badge {
   display: flex;
   align-items: center;
@@ -93,10 +110,34 @@ a {
   color: #333;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 .badge .score {
   margin-left: 5px;
 }
+
 .links {
   display: flex;
   gap: 8px;
+}
+
+/* Property size information styling */
+.property-size-info {
+  display: flex;
+  gap: 12px;
+}
+
+.size-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #666;
+  font-size: 14px;
+}
+
+.size-item svg {
+  color: #666;
+}
+
+.property-sizes .property-size-info {
+  margin-top: 0;
 }
