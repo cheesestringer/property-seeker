@@ -18,6 +18,7 @@ export const PropertyInsights = ({ cacheKey, address, retail = true, showSizeOnl
   const [propertyUrl, setPropertyUrl] = useState('');
   const [landSize, setLandSize] = useState('');
   const [floorSize, setFloorSize] = useState('');
+  const [pricePerSqm, setPricePerSqm] = useState('');
 
   const getPropertyInsights = async () => {
     try {
@@ -27,7 +28,7 @@ export const PropertyInsights = ({ cacheKey, address, retail = true, showSizeOnl
       setPropertyUrl(response?.url);
       setLandSize(response?.landSize);
       setFloorSize(response?.floorSize);
-
+      setPricePerSqm(response?.pricePerSqm);
     } catch (error) {
       console.log('Failed to find property insights', error);
     } finally {
@@ -72,6 +73,14 @@ export const PropertyInsights = ({ cacheKey, address, retail = true, showSizeOnl
               <path fill-rule="evenodd" clip-rule="evenodd" d="M3.5 4A2.5 2.5 0 0 0 1 6.5v11A2.5 2.5 0 0 0 3.5 20h17a2.5 2.5 0 0 0 2.5-2.5v-11A2.5 2.5 0 0 0 20.5 4h-17ZM8 6.5V5H3.5A1.5 1.5 0 0 0 2 6.5V11h6V9.5a.5.5 0 0 1 1 0v4a.5.5 0 0 1-1 0V12H2v5.5A1.5 1.5 0 0 0 3.5 19H8v-2.5a.5.5 0 0 1 1 0V19h11.5a1.5 1.5 0 0 0 1.5-1.5V10h-9.5a.5.5 0 0 1 0-1H22V6.5A1.5 1.5 0 0 0 20.5 5H9v1.5a.5.5 0 0 1-1 0Z" fill="currentColor"></path>
             </svg>
             <span>{floorSize}</span>
+          </div>
+        )}
+        {pricePerSqm && (
+          <div className="size-item" title="Price per square meter">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm-1 8h4v2h-4z" fill="currentColor"></path>
+            </svg>
+            <span>{pricePerSqm}</span>
           </div>
         )}
       </div>

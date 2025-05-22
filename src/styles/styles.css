@@ -141,3 +141,9 @@ a {
 .property-sizes .property-size-info {
   margin-top: 0;
 }
+
+/* Highlight the price per square meter */
+.size-item[title="Price per square meter"] {
+  font-weight: bold;
+  color: #1f7e2c;
+}

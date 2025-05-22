@@ -163,7 +163,8 @@ const getPropertyInsights = async (cacheKey: string, address: string) => {
       confidence: valueConfidenceMatch?.[1],
       url: response.url,
       landSize: landSizeMatch?.[1],
-      floorSize: floorSizeMatch?.[1]
+      floorSize: floorSizeMatch?.[1],
+      pricePerSqm: calculatePricePerSqm(valueMatch?.[1], landSizeMatch?.[1])
     };
 
     await updateBrowserCache(cacheKey, cache => {
@@ -305,5 +306,53 @@ const getWalkScore = async (cacheKey: string, address: string) => {
     };
   } catch (error) {
     console.log('Failed to get walk score', address, error);
+  }
+};
+
+// Utility function to convert land size to square meters and calculate price per sqm
+const calculatePricePerSqm = (propertyValue: string, landSize: string): string => {
+  if (!propertyValue || !landSize) return null;
+
+  try {
+    // Extract numeric value from property value (remove currency symbol, commas, etc.)
+    const valueString = propertyValue.replace(/[^\d.]/g, '');
+    const value = parseFloat(valueString);
+
+    // Extract numeric value and unit from land size
+    const sizeMatch = landSize.match(/(\d+(?:\.\d+)?)\s*([a-zA-Z²]+)?/);
+    if (!sizeMatch) return null;
+
+    const size = parseFloat(sizeMatch[1]);
+    const unit = (sizeMatch[2] || 'm²').toLowerCase();
+
+    // Convert to square meters based on unit
+    let sizeInSqm = size;
+    switch (unit) {
+      case 'm²':
+      case 'sqm':
+      case 'm2':
+        sizeInSqm = size;
+        break;
+      case 'ha':
+      case 'hectare':
+      case 'hectares':
+        sizeInSqm = size * 10000; // 1 hectare = 10,000 sqm
+        break;
+      case 'acre':
+      case 'acres':
+        sizeInSqm = size * 4046.86; // 1 acre = 4,046.86 sqm
+        break;
+      default:
+        sizeInSqm = size; // Assume square meters if unit not recognized
+    }
+
+    // Calculate price per square meter
+    const pricePerSqm = value / sizeInSqm;
+
+    // Format to 2 decimal places
+    return `$${pricePerSqm.toFixed(2)}/m²`;
+  } catch (error) {
+    console.log('Error calculating price per sqm:', error);
+    return null;
   }
 };
