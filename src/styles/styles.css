@@ -24,8 +24,14 @@ a {
   background-color: #fff;
   max-width: 100%;
   margin: 16px auto;
-
+  min-width: 400px;
   container-type: inline-size;
+}
+
+/* Increase width specifically in map view context */
+[data-plasmo-target="map-card"] .card {
+  min-width: 420px;
+  width: 420px;
 }
 
 .card-header {
@@ -121,9 +127,25 @@ a {
 }
 
 /* Property size information styling */
+.property-sizes {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.property-sizes .item-label {
+  margin-right: 8px;
+  white-space: nowrap;
+}
+
 .property-size-info {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
+  align-items: center;
+}
+
+[data-plasmo-target="map-card"] .property-size-info {
+  margin-left: 0;
 }
 
 .size-item {
@@ -143,7 +165,18 @@ a {
 }
 
 /* Highlight the price per square meter */
-.size-item[title="Price per square meter"] {
+.size-item[title="Price per square meter - Calculated using property value estimate or listing price when estimate is unavailable. For price ranges, the average of low and high values is used."],
+.price-per-sqm {
   font-weight: bold;
   color: #1f7e2c;
+}
+
+.calculated-tag {
+  font-size: 10px;
+  background-color: #e0f2e0;
+  color: #1f7e2c;
+  padding: 1px 4px;
+  border-radius: 4px;
+  margin-left: 4px;
+  font-weight: normal;
 }

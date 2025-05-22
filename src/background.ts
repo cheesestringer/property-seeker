@@ -107,7 +107,8 @@ const getPropertyInsights = async (cacheKey: string, address: string) => {
         confidence: cache.propertyConfidence,
         url: cache.propertyUrl,
         landSize: cache.propertyLandSize,
-        floorSize: cache.propertyFloorSize
+        floorSize: cache.propertyFloorSize,
+        pricePerSqm: calculatePricePerSqm(cache.propertyValue || cache.price, cache.propertyLandSize)
       };
     }
 
@@ -164,7 +165,7 @@ const getPropertyInsights = async (cacheKey: string, address: string) => {
       url: response.url,
       landSize: landSizeMatch?.[1],
       floorSize: floorSizeMatch?.[1],
-      pricePerSqm: calculatePricePerSqm(valueMatch?.[1], landSizeMatch?.[1])
+      pricePerSqm: calculatePricePerSqm(valueMatch?.[1] || cache?.price, landSizeMatch?.[1])
     };
 
     await updateBrowserCache(cacheKey, cache => {
@@ -311,12 +312,30 @@ const getWalkScore = async (cacheKey: string, address: string) => {
 
 // Utility function to convert land size to square meters and calculate price per sqm
 const calculatePricePerSqm = (propertyValue: string, landSize: string): string => {
-  if (!propertyValue || !landSize) return null;
+  if (!landSize) return null;
 
   try {
-    // Extract numeric value from property value (remove currency symbol, commas, etc.)
-    const valueString = propertyValue.replace(/[^\d.]/g, '');
-    const value = parseFloat(valueString);
+    // Get property value
+    let value = 0;
+
+    if (propertyValue) {
+      // Check if it's a price range (e.g., "$500,000-$600,000")
+      const rangeMatch = propertyValue.match(/\$?([\d,]+)(?:[\s-]+)\$?([\d,]+)/);
+
+      if (rangeMatch) {
+        // It's a range, calculate the average
+        const lowPrice = parseFloat(rangeMatch[1].replace(/,/g, ''));
+        const highPrice = parseFloat(rangeMatch[2].replace(/,/g, ''));
+        value = (lowPrice + highPrice) / 2;
+      } else {
+        // Single value, extract the numeric part
+        const valueString = propertyValue.replace(/[^\d.]/g, '');
+        value = parseFloat(valueString);
+      }
+    } else {
+      // No property value available
+      return null;
+    }
 
     // Extract numeric value and unit from land size
     const sizeMatch = landSize.match(/(\d+(?:\.\d+)?)\s*([a-zA-Z²]+)?/);

@@ -22,7 +22,7 @@ const RealestateMap = ({ anchor }) => {
   }
 
   return (
-    <div style={{ position: 'absolute', top: '-15px', width: '82%' }}>
+    <div style={{ position: 'absolute', top: '-15px', width: '100%' }} data-plasmo-target="map-card">
       <Realestate anchor={anchor} />
     </div>
   );
