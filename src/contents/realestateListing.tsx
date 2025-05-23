@@ -3,6 +3,22 @@ import styles from 'data-text:../styles/styles.css';
 import type { PlasmoCSConfig, PlasmoGetInlineAnchorList, PlasmoGetStyle } from 'plasmo';
 import { Realestate } from '../components/realestate';
 
+// contains each li element
+const propertyList = document.querySelector('ul.tiered-results');
+
+if (propertyList) {
+  const observer = new MutationObserver(() => {
+    propertyList.querySelectorAll('article.residential-card--compressed-view')
+      .forEach((el) => el.classList.remove('residential-card--compressed-view'));
+  });
+
+  observer.observe(propertyList, {
+    childList: true,
+    subtree: true
+  });
+}
+
+
 export const config: PlasmoCSConfig = {
   matches: ['https://www.realestate.com.au/*']
 };

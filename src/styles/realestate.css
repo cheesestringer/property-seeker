@@ -2,6 +2,7 @@
   .card-body {
     text-align: left;
   }
+
   .item {
     display: flex;
     flex-direction: column;
