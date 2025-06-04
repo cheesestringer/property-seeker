@@ -2,15 +2,19 @@
   z-index: 1 !important;
   cursor: auto;
 }
+
 a {
   text-decoration: none;
 }
+
 .logo {
   height: 40px;
 }
+
 .icon {
   height: 24px;
 }
+
 .card {
   flex: 1;
   border: 1px solid #ddd;
@@ -20,9 +24,16 @@ a {
   background-color: #fff;
   max-width: 100%;
   margin: 16px auto;
-
+  min-width: 400px;
   container-type: inline-size;
 }
+
+/* Increase width specifically in map view context */
+[data-plasmo-target="map-card"] .card {
+  min-width: 420px;
+  width: 420px;
+}
+
 .card-header {
   display: flex;
   align-items: center;
@@ -31,17 +42,21 @@ a {
   gap: 10px;
   margin-bottom: 16px;
 }
+
 .card-body {
   text-align: center;
 }
+
 .card-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
 .items {
   margin-bottom: 16px;
 }
+
 .item {
   display: flex;
   justify-content: space-between;
@@ -49,10 +64,12 @@ a {
   font-size: 16px;
   margin-bottom: 8px;
 }
+
 .item-label {
   font-weight: bold;
   color: #333;
 }
+
 .confidence-badge {
   display: inline-block;
   padding: 2px 4px;
@@ -61,27 +78,33 @@ a {
   font-weight: bold;
   text-transform: capitalize;
 }
+
 .confidence-badge.high {
   background-color: #c8e6c9;
   color: #2e7d32;
 }
+
 .confidence-badge.medium {
   background-color: #fff9c4;
   color: #f9a825;
 }
+
 .confidence-badge.low {
   background-color: #ffcdd2;
   color: #c62828;
 }
+
 .confidence-badge.building {
   background-color: #e0e0e0;
   color: #757575;
 }
+
 .walk-score-container {
   display: flex;
   align-items: center;
   gap: 10px;
 }
+
 .badge {
   display: flex;
   align-items: center;
@@ -93,10 +116,67 @@ a {
   color: #333;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 .badge .score {
   margin-left: 5px;
 }
+
 .links {
   display: flex;
   gap: 8px;
+}
+
+/* Property size information styling */
+.property-sizes {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.property-sizes .item-label {
+  margin-right: 8px;
+  white-space: nowrap;
+}
+
+.property-size-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+[data-plasmo-target="map-card"] .property-size-info {
+  margin-left: 0;
+}
+
+.size-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #666;
+  font-size: 14px;
+}
+
+.size-item svg {
+  color: #666;
+}
+
+.property-sizes .property-size-info {
+  margin-top: 0;
+}
+
+/* Highlight the price per square meter */
+.size-item[title="Price per square meter - Calculated using property value estimate or listing price when estimate is unavailable. For price ranges, the average of low and high values is used."],
+.price-per-sqm {
+  font-weight: bold;
+  color: #1f7e2c;
+}
+
+.calculated-tag {
+  font-size: 10px;
+  background-color: #e0f2e0;
+  color: #1f7e2c;
+  padding: 1px 4px;
+  border-radius: 4px;
+  margin-left: 4px;
+  font-weight: normal;
 }
