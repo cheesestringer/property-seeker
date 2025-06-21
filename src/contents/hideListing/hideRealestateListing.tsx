@@ -37,11 +37,12 @@ export const getInlineAnchorList: PlasmoGetInlineAnchorList = async () => {
 };
 
 const HideRealestateListing = ({ anchor }) => {
+  const element = anchor?.element as HTMLElement | null;
   return (
     <HideListing
       anchor={anchor}
-      linkSelector={() => anchor.element?.querySelector('a')}
-      addressSelector={() => anchor.element?.querySelector('a')?.textContent}
+      linkSelector={() => element?.querySelector('a')?.href}
+      addressSelector={() => element?.querySelector('a')?.textContent}
     />
   );
 };

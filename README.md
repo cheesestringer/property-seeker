@@ -17,6 +17,7 @@ If you'd like to find the hidden salary range for jobs check out [Salary Seeker]
 
 - **Reveal hidden prices**: Automatically display the hidden prices for properties.
 - **Property value estimates**: View estimated property values from property.com.au.
+- **Hide unwanted listings**: Hide properties you're not interested in, even after you refresh or revisit the site.
 - **Privacy-Focused**: Searches are performed locally in your browser, ensuring your data is never shared externally.
 - **View prices everywhere**: Show prices on search results, property details, and maps.
 - **Walk Score integration**: View Walk Score ratings to understand a property's walkability.

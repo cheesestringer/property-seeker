@@ -3,7 +3,7 @@
  */
 export default {
   arrowParens: 'avoid',
-  printWidth: 160,
+  printWidth: 145,
   tabWidth: 2,
   semi: true,
   singleQuote: true,

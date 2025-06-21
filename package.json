@@ -1,7 +1,7 @@
 {
   "name": "property-seeker",
   "displayName": "Property Seeker",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "Take the guess work out of house hunting.",
   "author": "cheesestringer",
   "scripts": {
@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "bottleneck": "^2.19.5",
-    "plasmo": "^0.90.3",
+    "plasmo": "^0.90.5",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
