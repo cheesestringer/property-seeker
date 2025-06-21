@@ -4,7 +4,7 @@ import { useEffect, useState, type FC } from 'react';
 import { getCleanUrl } from '~common';
 import { propertySeeker, seeking } from '~constants';
 import { useIntersectionObserver } from '~hooks/useObserver';
-import { getPrice } from '~services/realestateService';
+import { getPrice } from '~services/realEstateService';
 import { PropertyInsights } from './propertyInsights';
 import { ViewOnGitHub } from './viewOnGitHub';
 import { ViewOnMaps } from './viewOnMaps';
