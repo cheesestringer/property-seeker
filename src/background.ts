@@ -105,7 +105,10 @@ const getPropertyInsights = async (cacheKey: string, address: string) => {
       return {
         value: cache.propertyValue,
         confidence: cache.propertyConfidence,
-        url: cache.propertyUrl
+        url: cache.propertyUrl,
+        landSize: cache.propertyLandSize,
+        floorSize: cache.propertyFloorSize,
+        pricePerSqm: calculatePricePerSqm(cache.propertyValue || cache.price, cache.propertyLandSize)
       };
     }
 
@@ -126,19 +129,35 @@ const getPropertyInsights = async (cacheKey: string, address: string) => {
     const valueRegex = /data-testid="valuation-sub-brick-price-text"[^>]*>([\s\S]*?)<\/[^>]+>/;
     const valueConfidenceRegex = /data-testid="valuation-sub-brick-confidence"[^>]*>([\s\S]*?)<\/[^>]+>/;
 
+    // Extract land size and floor size information
+    const landSizeRegex = /title="Land size"[\s\S]*?<p[^>]*>([\w\d\s.²]+)<\/p>/;
+    const floorSizeRegex = /title="Floor area"[\s\S]*?<p[^>]*>([\w\d\s.²]+)<\/p>/;
+
+    // Fallback patterns if the above don't match
+    const landSizeAltRegex = /Land size[\s\S]*?>([\d.]+m²)<\//;
+    const floorSizeAltRegex = /Floor area[\s\S]*?>([\d.]+m²)<\//;
+
     const valueMatch = data.match(valueRegex);
     const valueConfidenceMatch = data.match(valueConfidenceRegex);
+    const landSizeMatch = data.match(landSizeRegex) || data.match(landSizeAltRegex);
+    const floorSizeMatch = data.match(floorSizeRegex) || data.match(floorSizeAltRegex);
+
 
     const property = {
       value: valueMatch?.[1],
       confidence: valueConfidenceMatch?.[1],
-      url: response.url
+      url: response.url,
+      landSize: landSizeMatch?.[1],
+      floorSize: floorSizeMatch?.[1],
+      pricePerSqm: calculatePricePerSqm(valueMatch?.[1] || cache?.price, landSizeMatch?.[1])
     };
 
     await updateBrowserCache(cacheKey, cache => {
       cache.propertyValue = property.value;
       cache.propertyConfidence = property.confidence;
       cache.propertyUrl = property.url;
+      cache.propertyLandSize = property.landSize;
+      cache.propertyFloorSize = property.floorSize;
       cache.propertyTimestamp = Date.now();
       return cache;
     });
@@ -272,5 +291,72 @@ const getWalkScore = async (cacheKey: string, address: string) => {
     };
   } catch (error) {
     console.log('Failed to get walk score', address, error);
+    return null;
+  }
+};
+
+// Utility function to convert land size to square meters and calculate price per sqm
+const calculatePricePerSqm = (propertyValue: string, landSize: string): string => {
+  if (!landSize) return null;
+
+  try {
+    // Get property value
+    let value = 0;
+
+    if (propertyValue) {
+      // Check if it's a price range (e.g., "$500,000-$600,000")
+      const rangeMatch = propertyValue.match(/\$?([\d,]+)(?:[\s-]+)\$?([\d,]+)/);
+
+      if (rangeMatch) {
+        // It's a range, calculate the average
+        const lowPrice = parseFloat(rangeMatch[1].replace(/,/g, ''));
+        const highPrice = parseFloat(rangeMatch[2].replace(/,/g, ''));
+        value = (lowPrice + highPrice) / 2;
+      } else {
+        // Single value, extract the numeric part
+        const valueString = propertyValue.replace(/[^\d.]/g, '');
+        value = parseFloat(valueString);
+      }
+    } else {
+      // No property value available
+      return null;
+    }
+
+    // Extract numeric value and unit from land size
+    const sizeMatch = landSize.match(/(\d+(?:\.\d+)?)\s*([a-zA-Z²]+)?/);
+    if (!sizeMatch) return null;
+
+    const size = parseFloat(sizeMatch[1]);
+    const unit = (sizeMatch[2] || 'm²').toLowerCase();
+
+    // Convert to square meters based on unit
+    let sizeInSqm = size;
+    switch (unit) {
+      case 'm²':
+      case 'sqm':
+      case 'm2':
+        sizeInSqm = size;
+        break;
+      case 'ha':
+      case 'hectare':
+      case 'hectares':
+        sizeInSqm = size * 10000; // 1 hectare = 10,000 sqm
+        break;
+      case 'acre':
+      case 'acres':
+        sizeInSqm = size * 4046.86; // 1 acre = 4,046.86 sqm
+        break;
+      default:
+        sizeInSqm = size; // Assume square meters if unit not recognized
+    }
+
+    // Calculate price per square meter
+    const pricePerSqm = value / sizeInSqm;
+
+    // Format to 2 decimal places
+    return `$${pricePerSqm.toFixed(2)}/m²`;
+  } catch (error) {
+    console.log('Error calculating price per sqm:', error);
+    return null;
   }
 };
