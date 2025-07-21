@@ -1,10 +1,11 @@
 {
   "name": "property-seeker",
   "displayName": "Property Seeker",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "Take the guess work out of house hunting.",
   "author": "cheesestringer",
   "scripts": {
+    "postinstall": "patch-package",
     "start": "plasmo dev",
     "format": "npx prettier --write .",
     "build": "plasmo build",
@@ -27,6 +28,7 @@
     "@types/node": "20.11.5",
     "@types/react": "18.2.48",
     "@types/react-dom": "18.2.18",
+    "patch-package": "^8.0.0",
     "prettier": "3.2.4",
     "typescript": "5.3.3"
   },

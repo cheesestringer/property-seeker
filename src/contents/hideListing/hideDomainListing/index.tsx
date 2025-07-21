@@ -1,29 +1,28 @@
-import hideListingStyles from 'data-text:./hideListing.css';
-import hideListingRealestateStyles from 'data-text:./hideListingRealestate.css';
+import hideListingStyles from 'data-text:../hideListing.css';
 import type { PlasmoCSConfig, PlasmoGetInlineAnchorList, PlasmoGetStyle } from 'plasmo';
 import { HideListing } from '~components/hideListing';
 
 export const config: PlasmoCSConfig = {
-  matches: ['https://www.realestate.com.au/*']
+  matches: ['https://www.domain.com.au/*']
 };
 
 export const getStyle: PlasmoGetStyle = () => {
   const style = document.createElement('style');
-  style.textContent = hideListingStyles + hideListingRealestateStyles;
+  style.textContent = hideListingStyles;
   return style;
 };
 
 export const getInlineAnchorList: PlasmoGetInlineAnchorList = async () => {
-  const elements = [...document.querySelectorAll<HTMLElement>('.tiered-results--exact > li')].filter(element => {
-    if (!element) {
-      return false;
-    }
-    const child = element.firstElementChild as HTMLElement;
-    if (child.className.includes('CarouselPlaceholder') || child.className.includes('CarouselContainer')) {
+  const elements = [...document.querySelectorAll<HTMLElement>('[data-testid="results"] > li')].filter(element => {
+    if (element.getAttribute('data-testid').includes('adSpot')) {
       return false;
     }
 
-    if (child.nodeName === 'ASIDE') {
+    if (element.querySelector('[data-testid="listing-card-topspot"]')) {
+      return false;
+    }
+
+    if (element.querySelector('[data-testid="listing-card-project"]')) {
       return false;
     }
 
@@ -36,15 +35,15 @@ export const getInlineAnchorList: PlasmoGetInlineAnchorList = async () => {
   }));
 };
 
-const HideRealestateListing = ({ anchor }) => {
+const HideDomainListing = ({ anchor }) => {
   const element = anchor?.element as HTMLElement | null;
   return (
     <HideListing
       anchor={anchor}
       linkSelector={() => element?.querySelector('a')?.href}
-      addressSelector={() => element?.querySelector('a')?.textContent}
+      addressSelector={() => element?.querySelector(`[data-testid="address-wrapper"]`)?.textContent}
     />
   );
 };
 
-export default HideRealestateListing;
+export default HideDomainListing;
