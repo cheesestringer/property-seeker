@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { seeking } from '~constants';
 import { useIntersectionObserver } from '~hooks/useObserver';
+import { PropertySizeBadge } from './propertySizeBadge';
 
 interface PropertyInsightsProps {
   cacheKey: string;
@@ -15,6 +16,8 @@ export const PropertyInsights = ({ cacheKey, address, retail = true }: PropertyI
   const [value, setValue] = useState('');
   const [valueConfidence, setValueConfidence] = useState('');
   const [propertyUrl, setPropertyUrl] = useState('');
+  const [landSize, setLandSize] = useState('');
+  const [floorSize, setFloorSize] = useState('');
 
   const getPropertyInsights = async () => {
     try {
@@ -22,6 +25,8 @@ export const PropertyInsights = ({ cacheKey, address, retail = true }: PropertyI
       setValue(response?.value);
       setValueConfidence(response?.confidence);
       setPropertyUrl(response?.url);
+      setLandSize(response?.landSize);
+      setFloorSize(response?.floorSize);
     } catch (error) {
       console.log('Failed to find property insights', error);
     } finally {
@@ -54,27 +59,33 @@ export const PropertyInsights = ({ cacheKey, address, retail = true }: PropertyI
 
   return (
     <>
-      <span
-        className="item-label"
-        title={
-          retail
-            ? 'The PropTrack value esimate is calculated using automated statistical models based on available local property data, including the type of property, recent sales and local price trends.'
-            : null
-        }
-        ref={containerRef}>
-        {retail ? 'Value estimate' : 'Property insights'}:
-      </span>
-      <span>
-        {loading ? (
-          <>{seeking}</>
-        ) : value ? (
-          <>
-            {value} <ConfidenceBadge confidence={valueConfidence} />
-          </>
-        ) : (
-          <ConfidenceBadge confidence="Building insights" />
-        )}
-      </span>
+      <div className="item extra">
+        <span
+          className="item-label"
+          title={
+            retail
+              ? 'The PropTrack value esimate is calculated using automated statistical models based on available local property data, including the type of property, recent sales and local price trends.'
+              : null
+          }
+          ref={containerRef}>
+          {retail ? 'Value estimate' : 'Property insights'}:
+        </span>
+        <span>
+          {loading ? (
+            <>{seeking}</>
+          ) : value ? (
+            <>
+              {value} <ConfidenceBadge confidence={valueConfidence} />
+            </>
+          ) : (
+            <ConfidenceBadge confidence="Building insights" />
+          )}
+        </span>
+      </div>
+
+      <div className="item extra">
+        <PropertySizeBadge landSize={landSize} floorSize={floorSize} />
+      </div>
     </>
   );
 };

@@ -9,6 +9,8 @@ export interface PropertyCache {
   propertyConfidence: string;
   propertyUrl: string;
   propertyTimestamp: number;
+  propertyLandSize: string;
+  propertyFloorSize: string;
 
   walkScore: string;
   transportScore: string;

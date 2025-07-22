@@ -11,6 +11,9 @@ a {
 .icon {
   height: 24px;
 }
+.small-icon {
+  height: 16px;
+}
 .card {
   flex: 1;
   border: 1px solid #ddd;
@@ -81,6 +84,15 @@ a {
   display: flex;
   align-items: center;
   gap: 10px;
+}
+.property-sizes-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.property-size {
+  display: flex;
+  align-items: center;
 }
 .badge {
   display: flex;

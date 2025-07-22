@@ -85,9 +85,7 @@ export const Realestate: FC<PlasmoCSUIProps> = ({ anchor }) => {
             </span>
             <span>{range ?? seeking}</span>
           </div>
-          <div className="item">
-            <PropertyInsights cacheKey={cacheKey} address={address} />
-          </div>
+          <PropertyInsights cacheKey={cacheKey} address={address} />
         </div>
       </div>
       <div className="card-footer">

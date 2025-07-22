@@ -7,7 +7,7 @@ interface WalkScoreProps {
 }
 
 export const WalkScore = ({ cacheKey, address }: WalkScoreProps) => {
-  const [isVisible, containerRef] = useIntersectionObserver();
+  const [isVisible, containerRef] = useIntersectionObserver<HTMLDivElement>();
 
   const [walkScore, setWalkScore] = useState('');
   const [transportScore, setTransportScore] = useState('');
