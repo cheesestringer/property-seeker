@@ -38,7 +38,12 @@ export const PropertyInsights = ({ cacheKey, address, retail = true }: PropertyI
   const ConfidenceBadge = ({ confidence }: { confidence: string }) => {
     if (propertyUrl) {
       return (
-        <a href={propertyUrl} target="_blank" rel="noreferrer" title="View more details on property.com.au" aria-label="View more details on property.com.au">
+        <a
+          href={propertyUrl}
+          target="_blank"
+          rel="noreferrer"
+          title="View more details on property.com.au"
+          aria-label="View more details on property.com.au">
           <span className={`confidence-badge ${confidence?.toLocaleLowerCase()}`}>{confidence}</span>
         </a>
       );

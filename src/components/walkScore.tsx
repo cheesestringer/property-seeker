@@ -40,7 +40,11 @@ export const WalkScore = ({ cacheKey, address }: WalkScoreProps) => {
 
   return (
     <div ref={containerRef} className="walk-score-container">
-      <a href={url ?? 'https://www.walkscore.com/score/'} target="_blank" rel="noreferrer" title={`Walk Score: ${walkScore ? `${walkScore}/100` : 'N/A'}`}>
+      <a
+        href={url ?? 'https://www.walkscore.com/score/'}
+        target="_blank"
+        rel="noreferrer"
+        title={`Walk Score: ${walkScore ? `${walkScore}/100` : 'N/A'}`}>
         <div className="badge" style={{ backgroundColor: getBadgeColor(walkScore) }}>
           <span role="img" aria-label="Walk emoji">
             🚶

@@ -12,7 +12,9 @@ export const ViewOnPropertyInsights = ({ address }: ViewOnPropertyInsightsProps)
 
   const getPropertyInsights = async () => {
     try {
-      const response = await fetch(`https://suggest.realestate.com.au/consumer-suggest/suggestions?max=6&type=address&src=property-seeker&query=${address}`);
+      const response = await fetch(
+        `https://suggest.realestate.com.au/consumer-suggest/suggestions?max=6&type=address&src=property-seeker&query=${address}`
+      );
       const data = (await response.json()) as SuggestionResponse;
       const bestMatchUrl = data._embedded?.suggestions?.[0]?.source?.url;
       if (bestMatchUrl) {

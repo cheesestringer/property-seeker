@@ -83,4 +83,4 @@ export const getCleanUrl = (href: string) => {
     console.log('Failed to create clean url', href);
     throw error;
   }
-}
+};
