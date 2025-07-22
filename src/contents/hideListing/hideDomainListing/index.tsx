@@ -22,10 +22,6 @@ export const getInlineAnchorList: PlasmoGetInlineAnchorList = async () => {
       return false;
     }
 
-    if (element.querySelector('[data-testid="listing-card-project"]')) {
-      return false;
-    }
-
     return true;
   });
 
@@ -35,13 +31,20 @@ export const getInlineAnchorList: PlasmoGetInlineAnchorList = async () => {
   }));
 };
 
+const addressSelector = (element: HTMLElement) => element?.querySelector(`[data-testid="address-wrapper"]`)?.textContent;
+
+const projectAddressSelector = (element: HTMLElement) =>
+  element?.querySelector(`[data-testid="listing-card-project-details"]`)?.firstElementChild?.textContent;
+
 const HideDomainListing = ({ anchor }) => {
   const element = anchor?.element as HTMLElement | null;
+  const isProject = element?.querySelector('[data-testid="listing-card-project"]');
+
   return (
     <HideListing
       anchor={anchor}
       linkSelector={() => element?.querySelector('a')?.href}
-      addressSelector={() => element?.querySelector(`[data-testid="address-wrapper"]`)?.textContent}
+      addressSelector={() => (isProject ? projectAddressSelector(element) : addressSelector(element))}
     />
   );
 };

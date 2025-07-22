@@ -13,17 +13,19 @@ export const getStyle: PlasmoGetStyle = () => {
   return style;
 };
 
+const classNamesToExclude = ['CarouselPlaceholder', 'CarouselContainer', 'CarouselWrapper'];
+
 export const getInlineAnchorList: PlasmoGetInlineAnchorList = async () => {
   const elements = [...document.querySelectorAll<HTMLElement>('.tiered-results--exact > li')].filter(element => {
     if (!element) {
       return false;
     }
-    const child = element.firstElementChild as HTMLElement;
+    const child = element?.firstElementChild as HTMLElement;
     if (!child) {
       return false;
     }
 
-    if (child.className.includes('CarouselPlaceholder') || child.className.includes('CarouselContainer')) {
+    if (classNamesToExclude.some(name => child.className?.toLocaleLowerCase().includes(name.toLocaleLowerCase()))) {
       return false;
     }
 

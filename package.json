@@ -1,7 +1,7 @@
 {
   "name": "property-seeker",
   "displayName": "Property Seeker",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "description": "Take the guess work out of house hunting.",
   "author": "cheesestringer",
   "scripts": {
@@ -9,8 +9,10 @@
     "start": "plasmo dev",
     "format": "npx prettier --write .",
     "build": "plasmo build",
-    "package": "plasmo package",
-    "release": "npm run build&& npm run package",
+    "release": "npm run release-chromium&& npm run release-firefox",
+    "build-chromium": "plasmo build",
+    "package-chromium": "plasmo package",
+    "release-chromium": "npm run build-chromium&& npm run package-chromium",
     "build-firefox": "plasmo build --target=firefox-mv3",
     "package-firefox": "plasmo package --target=firefox-mv3",
     "release-firefox": "npm run build-firefox&& npm run package-firefox"
