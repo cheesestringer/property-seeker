@@ -108,9 +108,7 @@ export const Domain: FC<PlasmoCSUIProps> = ({ anchor }) => {
             </span>
             <span>{range ?? seeking}</span>
           </div>
-          <div className="item extra">
-            <PropertyInsights cacheKey={cacheKey} address={address} />
-          </div>
+          <PropertyInsights cacheKey={cacheKey} address={address} />
           <div className="item extra">
             <DaysSince name="Listed" date={listedDate} />
           </div>

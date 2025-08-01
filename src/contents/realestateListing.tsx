@@ -8,8 +8,9 @@ const propertyList = document.querySelector('ul.tiered-results');
 
 if (propertyList) {
   const observer = new MutationObserver(() => {
-    propertyList.querySelectorAll('article.residential-card--compressed-view')
-      .forEach((el) => el.classList.remove('residential-card--compressed-view'));
+    propertyList
+      .querySelectorAll('article.residential-card--compressed-view')
+      .forEach(el => el.classList.remove('residential-card--compressed-view'));
   });
 
   observer.observe(propertyList, {
@@ -17,7 +18,6 @@ if (propertyList) {
     subtree: true
   });
 }
-
 
 export const config: PlasmoCSConfig = {
   matches: ['https://www.realestate.com.au/*']

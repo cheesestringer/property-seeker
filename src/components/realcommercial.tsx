@@ -89,9 +89,7 @@ export const Realcommercial: FC<PlasmoCSUIProps> = ({ anchor }) => {
             </span>
             <span>{range ?? seeking}</span>
           </div>
-          <div className="item extra">
-            <PropertyInsights cacheKey={cacheKey} address={address} retail={false} />
-          </div>
+          <PropertyInsights cacheKey={cacheKey} address={address} retail={false} />
           <div className="item extra">
             <DaysSince name="Listed" date={listedDate} />
           </div>

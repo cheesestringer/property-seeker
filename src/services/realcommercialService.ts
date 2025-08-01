@@ -92,21 +92,24 @@ const getPrice = async (summary: Realcommerical.PropertyResponse, signal: AbortS
   const maxRequests = 14;
   for (let i = 0; i < maxRequests; i++) {
     try {
-      const response = await realcommercialRateLimitedFetch('https://api.realcommercial.com.au/listing-ui/searches?featureFlags=marketTrendsSlice3', {
-        headers: { 'content-type': 'application/json' },
-        method: 'POST',
-        body: JSON.stringify({
-          channel: summary.listing.availableChannels.includes('for-sale') ? 'buy' : 'sold',
-          localities: localities,
-          filters: {
-            'price-range': { minimum: searchValue.toString(), maximum: maximum.toString() },
-            ...filter
-          },
-          page: 1,
-          'page-size': 60
-        }),
-        signal
-      });
+      const response = await realcommercialRateLimitedFetch(
+        'https://api.realcommercial.com.au/listing-ui/searches?featureFlags=marketTrendsSlice3',
+        {
+          headers: { 'content-type': 'application/json' },
+          method: 'POST',
+          body: JSON.stringify({
+            channel: summary.listing.availableChannels.includes('for-sale') ? 'buy' : 'sold',
+            localities: localities,
+            filters: {
+              'price-range': { minimum: searchValue.toString(), maximum: maximum.toString() },
+              ...filter
+            },
+            page: 1,
+            'page-size': 60
+          }),
+          signal
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`${response.status}`);
