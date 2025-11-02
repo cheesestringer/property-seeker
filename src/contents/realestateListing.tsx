@@ -1,6 +1,6 @@
 import realestateStyles from 'data-text:../styles/realestate.css';
 import styles from 'data-text:../styles/styles.css';
-import type { PlasmoCSConfig, PlasmoGetInlineAnchorList, PlasmoGetStyle } from 'plasmo';
+import type { PlasmoCSConfig, PlasmoGetInlineAnchorList, PlasmoGetShadowHostId, PlasmoGetStyle } from 'plasmo';
 import { Realestate } from '~components/realestate';
 
 // contains each li element
@@ -30,6 +30,11 @@ export const getStyle: PlasmoGetStyle = () => {
 };
 
 export const getInlineAnchorList: PlasmoGetInlineAnchorList = async () => document.querySelectorAll<HTMLElement>('.residential-card__content');
+
+export const getShadowHostId: PlasmoGetShadowHostId = ({ element }) => {
+  const container = element as HTMLElement | null;
+  return container?.querySelector<HTMLAnchorElement>('a[href]')?.href;
+};
 
 const RealestateListing = ({ anchor }) => <Realestate anchor={anchor} />;
 
