@@ -1,5 +1,5 @@
 import hideListingStyles from 'data-text:../hideListing.css';
-import type { PlasmoCSConfig, PlasmoGetInlineAnchorList, PlasmoGetStyle } from 'plasmo';
+import type { PlasmoCSConfig, PlasmoGetInlineAnchorList, PlasmoGetShadowHostId, PlasmoGetStyle } from 'plasmo';
 import { HideListing } from '~components/hideListing';
 
 export const config: PlasmoCSConfig = {
@@ -29,6 +29,11 @@ export const getInlineAnchorList: PlasmoGetInlineAnchorList = async () => {
     element: element,
     insertPosition: 'beforebegin'
   }));
+};
+
+export const getShadowHostId: PlasmoGetShadowHostId = ({ element }) => {
+  const container = element as HTMLElement | null;
+  return container?.querySelector<HTMLAnchorElement>('a[href]')?.href;
 };
 
 const addressSelector = (element: HTMLElement) => element?.querySelector(`[data-testid="address-wrapper"]`)?.textContent;
