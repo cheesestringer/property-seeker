@@ -16,7 +16,7 @@ export const getStyle: PlasmoGetStyle = () => {
 const classNamesToExclude = ['CarouselPlaceholder', 'CarouselContainer', 'CarouselWrapper'];
 
 export const getInlineAnchorList: PlasmoGetInlineAnchorList = async () => {
-  const elements = [...document.querySelectorAll<HTMLElement>('.tiered-results--exact > li')].filter(element => {
+  const elements = [...document.querySelectorAll<HTMLElement>('.tiered-results > li')].filter(element => {
     if (!element) {
       return false;
     }
