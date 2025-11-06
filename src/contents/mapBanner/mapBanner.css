@@ -1,0 +1,83 @@
+.map-banner__wrapper {
+  width: 100%;
+}
+
+.map-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  border-radius: 0 0 0.75rem 0.75rem;
+  background: linear-gradient(135deg, #1d5fbf 0%, #65b0ff 100%);
+  color: #f9fcff;
+  cursor: pointer;
+}
+
+.map-banner__logo {
+  width: 28px;
+  height: 28px;
+}
+
+.map-banner__content {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.map-banner__title {
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+}
+
+.map-banner__price {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-decoration: none;
+  color: inherit;
+}
+
+.map-banner__loading {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 120px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(249, 252, 255, 0.35);
+  overflow: hidden;
+}
+
+.map-banner__loading-bar {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: #f9fcff;
+  animation: map-banner-loading 1.4s ease-in-out infinite;
+}
+
+@keyframes map-banner-loading {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.map-banner__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}

@@ -2,7 +2,7 @@ import logo from 'data-base64:../../assets/logo.svg';
 import type { PlasmoCSUIProps } from 'plasmo';
 import { useEffect, useState, type FC } from 'react';
 import { getCleanUrl } from '~common';
-import { propertySeeker, seeking } from '~constants';
+import { priceUnavailable, projectUnsupported, propertySeeker, seeking } from '~constants';
 import { useIntersectionObserver } from '~hooks/useObserver';
 import { getPrice } from '~services/realestateService';
 import { PropertyInsights } from './propertyInsights';
@@ -29,13 +29,13 @@ export const Realestate: FC<PlasmoCSUIProps> = ({ anchor }) => {
       const cleanUrl = getCleanUrl(href);
 
       if (cleanUrl.toLocaleLowerCase().includes('/project/')) {
-        setRange('Projects not supported');
+        setRange(projectUnsupported);
         return;
       }
 
       setCacheKey(cleanUrl);
       const price = await getPrice(cleanUrl);
-      setRange(price ?? 'Unavailable');
+      setRange(price ?? priceUnavailable);
     } catch (error) {
       setRange('Failed to get price 😵');
     }
