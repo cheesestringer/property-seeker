@@ -2,7 +2,7 @@
   "name": "property-seeker",
   "displayName": "Property Seeker",
   "version": "2.0.12",
-  "description": "Take the guess work out of house hunting.",
+  "description": "Take the guesswork out of house hunting. Instant property insights for realestate.com.au & domain.com.au.",
   "author": "cheesestringer",
   "scripts": {
     "postinstall": "patch-package",
@@ -46,7 +46,7 @@
     ],
     "browser_specific_settings": {
       "gecko": {
-        "id": "$FIREFOX_EXTENSION_ID"
+        "id": "{11eedd3f-ce55-4b6e-8234-c38f461f1f8e}"
       }
     }
   }

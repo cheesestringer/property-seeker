@@ -1,12 +1,12 @@
 # ![Property Seeker](https://github.com/user-attachments/assets/73740ed3-8d6d-4b6b-a7a4-53c889dfd2ac)
 
-Take the guess work out of house hunting 🎉
+Take the guesswork out of house hunting 🎉
 
 Reveals the hidden price range for Australian retail and commercial property advertised on:
 
-- [Domain](https://www.domain.com.au)
-- [realestate.com.au](https://www.realestate.com.au)
-- [realcommercial.com.au](https://www.realcommercial.com.au)
+- 🏠 [domain.com.au](https://www.domain.com.au)
+- 🏠 [realestate.com.au](https://www.realestate.com.au)
+- 🏢 [realcommercial.com.au](https://www.realcommercial.com.au)
 
 [<img src="https://cdn.buymeacoffee.com/buttons/v2/default-orange.png" width="150" />](https://www.buymeacoffee.com/cheesestringer)
 
@@ -18,7 +18,6 @@ If you'd like to find the hidden salary range for jobs check out [Salary Seeker]
 - **Reveal hidden prices**: Automatically display the hidden prices for properties.
 - **Property value estimates**: View estimated property values from property.com.au.
 - **Hide unwanted listings**: Hide properties you're not interested in, even after you refresh or revisit the site.
-- **Privacy-Focused**: Searches are performed locally in your browser, ensuring your data is never shared externally.
 - **View prices everywhere**: Show prices on search results, property details, and maps.
 - **Walk Score integration**: View Walk Score ratings to understand a property's walkability.
 - **Property tracker integration**: Quickly access realestate.com.au property tracker insights and data, removing the need to manually search for property details.
@@ -48,9 +47,9 @@ You can use Property Seeker on your Android device by installing [Firefox](https
 
 ## Demo
 
-### Domain
+### domain.com.au
 
-![Domain](https://github.com/user-attachments/assets/2faf65c4-9c42-472c-9e40-3359edbc773e)
+![domain.com.au](https://github.com/user-attachments/assets/2faf65c4-9c42-472c-9e40-3359edbc773e)
 
 ### realestate.com.au
 
